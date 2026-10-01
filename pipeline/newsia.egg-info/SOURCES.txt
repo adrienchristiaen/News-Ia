@@ -1,0 +1,16 @@
+pyproject.toml
+newsia/__init__.py
+newsia/align.py
+newsia/cli.py
+newsia/collect.py
+newsia/draft.py
+newsia/episode.py
+newsia/rank.py
+newsia/transcribe.py
+newsia/weeks.py
+newsia.egg-info/PKG-INFO
+newsia.egg-info/SOURCES.txt
+newsia.egg-info/dependency_links.txt
+newsia.egg-info/entry_points.txt
+newsia.egg-info/requires.txt
+newsia.egg-info/top_level.txt

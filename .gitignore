@@ -1,0 +1,17 @@
+node_modules/
+.next/
+out/
+.venv/
+__pycache__/
+*.pyc
+.env
+data/
+episodes/*/voice.*
+episodes/*/*.mp4
+.DS_Store
+episodes/*/timing.json
+!episodes/demo-w00/timing.json
+web/public/ep/
+video/public/ep/
+web/next-env.d.ts
+web/*.tsbuildinfo

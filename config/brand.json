@@ -1,0 +1,16 @@
+{
+  "name": "La Gazette de l'Algorithme",
+  "short": "Gazette Algo",
+  "tagline": "Les nouvelles de l'IA, sans la poudre aux yeux.",
+  "language": "fr",
+  "handle": "@lagazettealgo",
+  "cta": "Abonne-toi pour le prochain numéro",
+  "colors": {
+    "paper": "#efe4cb",
+    "paperDark": "#dccaa1",
+    "ink": "#1d1710",
+    "inkSoft": "#4a3d2b",
+    "accent": "#8c2f1b",
+    "gold": "#b78a2a"
+  }
+}

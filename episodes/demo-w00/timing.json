@@ -1,0 +1,950 @@
+{
+ "mode": "estimate",
+ "duration": 56.37,
+ "units": [
+  {
+   "id": "hook",
+   "start": 0.0,
+   "end": 6.855
+  },
+  {
+   "id": "s1",
+   "start": 7.205,
+   "end": 18.14
+  },
+  {
+   "id": "s2",
+   "start": 18.49,
+   "end": 30.115
+  },
+  {
+   "id": "s3",
+   "start": 30.465,
+   "end": 41.1
+  },
+  {
+   "id": "s4",
+   "start": 41.45,
+   "end": 50.885
+  },
+  {
+   "id": "outro",
+   "start": 51.235,
+   "end": 56.02
+  }
+ ],
+ "words": [
+  {
+   "text": "Cette",
+   "start": 0.0,
+   "end": 0.345,
+   "unit": "hook"
+  },
+  {
+   "text": "semaine,",
+   "start": 0.345,
+   "end": 0.78,
+   "unit": "hook"
+  },
+  {
+   "text": "un",
+   "start": 0.78,
+   "end": 0.99,
+   "unit": "hook"
+  },
+  {
+   "text": "modèle",
+   "start": 0.99,
+   "end": 1.38,
+   "unit": "hook"
+  },
+  {
+   "text": "ouvert",
+   "start": 1.38,
+   "end": 1.77,
+   "unit": "hook"
+  },
+  {
+   "text": "bouscule",
+   "start": 1.77,
+   "end": 2.25,
+   "unit": "hook"
+  },
+  {
+   "text": "les",
+   "start": 2.25,
+   "end": 2.505,
+   "unit": "hook"
+  },
+  {
+   "text": "géants,",
+   "start": 2.505,
+   "end": 2.895,
+   "unit": "hook"
+  },
+  {
+   "text": "l'Europe",
+   "start": 2.895,
+   "end": 3.33,
+   "unit": "hook"
+  },
+  {
+   "text": "fixe",
+   "start": 3.33,
+   "end": 3.63,
+   "unit": "hook"
+  },
+  {
+   "text": "une",
+   "start": 3.63,
+   "end": 3.885,
+   "unit": "hook"
+  },
+  {
+   "text": "date,",
+   "start": 3.885,
+   "end": 4.185,
+   "unit": "hook"
+  },
+  {
+   "text": "et",
+   "start": 4.185,
+   "end": 4.395,
+   "unit": "hook"
+  },
+  {
+   "text": "un",
+   "start": 4.395,
+   "end": 4.605,
+   "unit": "hook"
+  },
+  {
+   "text": "agent",
+   "start": 4.605,
+   "end": 4.95,
+   "unit": "hook"
+  },
+  {
+   "text": "promet",
+   "start": 4.95,
+   "end": 5.34,
+   "unit": "hook"
+  },
+  {
+   "text": "de",
+   "start": 5.34,
+   "end": 5.55,
+   "unit": "hook"
+  },
+  {
+   "text": "travailler",
+   "start": 5.55,
+   "end": 6.12,
+   "unit": "hook"
+  },
+  {
+   "text": "à",
+   "start": 6.12,
+   "end": 6.3,
+   "unit": "hook"
+  },
+  {
+   "text": "ta",
+   "start": 6.3,
+   "end": 6.51,
+   "unit": "hook"
+  },
+  {
+   "text": "place.",
+   "start": 6.51,
+   "end": 6.855,
+   "unit": "hook"
+  },
+  {
+   "text": "La",
+   "start": 7.205,
+   "end": 7.415,
+   "unit": "s1"
+  },
+  {
+   "text": "société",
+   "start": 7.415,
+   "end": 7.85,
+   "unit": "s1"
+  },
+  {
+   "text": "fictive",
+   "start": 7.85,
+   "end": 8.285,
+   "unit": "s1"
+  },
+  {
+   "text": "Acme",
+   "start": 8.285,
+   "end": 8.585,
+   "unit": "s1"
+  },
+  {
+   "text": "publie",
+   "start": 8.585,
+   "end": 8.975,
+   "unit": "s1"
+  },
+  {
+   "text": "Orion,",
+   "start": 8.975,
+   "end": 9.32,
+   "unit": "s1"
+  },
+  {
+   "text": "un",
+   "start": 9.32,
+   "end": 9.53,
+   "unit": "s1"
+  },
+  {
+   "text": "modèle",
+   "start": 9.53,
+   "end": 9.92,
+   "unit": "s1"
+  },
+  {
+   "text": "ouvert.",
+   "start": 9.92,
+   "end": 10.31,
+   "unit": "s1"
+  },
+  {
+   "text": "Sur",
+   "start": 10.31,
+   "end": 10.565,
+   "unit": "s1"
+  },
+  {
+   "text": "les",
+   "start": 10.565,
+   "end": 10.82,
+   "unit": "s1"
+  },
+  {
+   "text": "tests",
+   "start": 10.82,
+   "end": 11.165,
+   "unit": "s1"
+  },
+  {
+   "text": "publiés,",
+   "start": 11.165,
+   "end": 11.6,
+   "unit": "s1"
+  },
+  {
+   "text": "il",
+   "start": 11.6,
+   "end": 11.81,
+   "unit": "s1"
+  },
+  {
+   "text": "rattrape",
+   "start": 11.81,
+   "end": 12.29,
+   "unit": "s1"
+  },
+  {
+   "text": "des",
+   "start": 12.29,
+   "end": 12.545,
+   "unit": "s1"
+  },
+  {
+   "text": "modèles",
+   "start": 12.545,
+   "end": 12.98,
+   "unit": "s1"
+  },
+  {
+   "text": "fermés",
+   "start": 12.98,
+   "end": 13.37,
+   "unit": "s1"
+  },
+  {
+   "text": "dix",
+   "start": 13.37,
+   "end": 13.625,
+   "unit": "s1"
+  },
+  {
+   "text": "fois",
+   "start": 13.625,
+   "end": 13.925,
+   "unit": "s1"
+  },
+  {
+   "text": "plus",
+   "start": 13.925,
+   "end": 14.225,
+   "unit": "s1"
+  },
+  {
+   "text": "gros.",
+   "start": 14.225,
+   "end": 14.525,
+   "unit": "s1"
+  },
+  {
+   "text": "Reste",
+   "start": 14.525,
+   "end": 14.87,
+   "unit": "s1"
+  },
+  {
+   "text": "à",
+   "start": 14.87,
+   "end": 15.05,
+   "unit": "s1"
+  },
+  {
+   "text": "vérifier",
+   "start": 15.05,
+   "end": 15.53,
+   "unit": "s1"
+  },
+  {
+   "text": "ces",
+   "start": 15.53,
+   "end": 15.785,
+   "unit": "s1"
+  },
+  {
+   "text": "résultats",
+   "start": 15.785,
+   "end": 16.31,
+   "unit": "s1"
+  },
+  {
+   "text": "par",
+   "start": 16.31,
+   "end": 16.565,
+   "unit": "s1"
+  },
+  {
+   "text": "des",
+   "start": 16.565,
+   "end": 16.82,
+   "unit": "s1"
+  },
+  {
+   "text": "évaluations",
+   "start": 16.82,
+   "end": 17.435,
+   "unit": "s1"
+  },
+  {
+   "text": "indépendantes.",
+   "start": 17.435,
+   "end": 18.14,
+   "unit": "s1"
+  },
+  {
+   "text": "Le",
+   "start": 18.49,
+   "end": 18.7,
+   "unit": "s2"
+  },
+  {
+   "text": "calendrier",
+   "start": 18.7,
+   "end": 19.27,
+   "unit": "s2"
+  },
+  {
+   "text": "d'application",
+   "start": 19.27,
+   "end": 19.93,
+   "unit": "s2"
+  },
+  {
+   "text": "des",
+   "start": 19.93,
+   "end": 20.185,
+   "unit": "s2"
+  },
+  {
+   "text": "règles",
+   "start": 20.185,
+   "end": 20.575,
+   "unit": "s2"
+  },
+  {
+   "text": "européennes",
+   "start": 20.575,
+   "end": 21.19,
+   "unit": "s2"
+  },
+  {
+   "text": "sur",
+   "start": 21.19,
+   "end": 21.445,
+   "unit": "s2"
+  },
+  {
+   "text": "l'IA",
+   "start": 21.445,
+   "end": 21.7,
+   "unit": "s2"
+  },
+  {
+   "text": "est",
+   "start": 21.7,
+   "end": 21.955,
+   "unit": "s2"
+  },
+  {
+   "text": "confirmé.",
+   "start": 21.955,
+   "end": 22.435,
+   "unit": "s2"
+  },
+  {
+   "text": "Concrètement,",
+   "start": 22.435,
+   "end": 23.095,
+   "unit": "s2"
+  },
+  {
+   "text": "les",
+   "start": 23.095,
+   "end": 23.35,
+   "unit": "s2"
+  },
+  {
+   "text": "entreprises",
+   "start": 23.35,
+   "end": 23.965,
+   "unit": "s2"
+  },
+  {
+   "text": "ont",
+   "start": 23.965,
+   "end": 24.22,
+   "unit": "s2"
+  },
+  {
+   "text": "jusqu'à",
+   "start": 24.22,
+   "end": 24.61,
+   "unit": "s2"
+  },
+  {
+   "text": "l'an",
+   "start": 24.61,
+   "end": 24.865,
+   "unit": "s2"
+  },
+  {
+   "text": "prochain",
+   "start": 24.865,
+   "end": 25.345,
+   "unit": "s2"
+  },
+  {
+   "text": "pour",
+   "start": 25.345,
+   "end": 25.645,
+   "unit": "s2"
+  },
+  {
+   "text": "documenter",
+   "start": 25.645,
+   "end": 26.215,
+   "unit": "s2"
+  },
+  {
+   "text": "leurs",
+   "start": 26.215,
+   "end": 26.56,
+   "unit": "s2"
+  },
+  {
+   "text": "systèmes",
+   "start": 26.56,
+   "end": 27.04,
+   "unit": "s2"
+  },
+  {
+   "text": "à",
+   "start": 27.04,
+   "end": 27.22,
+   "unit": "s2"
+  },
+  {
+   "text": "risque.",
+   "start": 27.22,
+   "end": 27.61,
+   "unit": "s2"
+  },
+  {
+   "text": "Pour",
+   "start": 27.61,
+   "end": 27.91,
+   "unit": "s2"
+  },
+  {
+   "text": "les",
+   "start": 27.91,
+   "end": 28.165,
+   "unit": "s2"
+  },
+  {
+   "text": "particuliers,",
+   "start": 28.165,
+   "end": 28.825,
+   "unit": "s2"
+  },
+  {
+   "text": "rien",
+   "start": 28.825,
+   "end": 29.125,
+   "unit": "s2"
+  },
+  {
+   "text": "ne",
+   "start": 29.125,
+   "end": 29.335,
+   "unit": "s2"
+  },
+  {
+   "text": "change",
+   "start": 29.335,
+   "end": 29.725,
+   "unit": "s2"
+  },
+  {
+   "text": "demain.",
+   "start": 29.725,
+   "end": 30.115,
+   "unit": "s2"
+  },
+  {
+   "text": "Un",
+   "start": 30.465,
+   "end": 30.675,
+   "unit": "s3"
+  },
+  {
+   "text": "éditeur",
+   "start": 30.675,
+   "end": 31.11,
+   "unit": "s3"
+  },
+  {
+   "text": "annonce",
+   "start": 31.11,
+   "end": 31.545,
+   "unit": "s3"
+  },
+  {
+   "text": "un",
+   "start": 31.545,
+   "end": 31.755,
+   "unit": "s3"
+  },
+  {
+   "text": "agent",
+   "start": 31.755,
+   "end": 32.1,
+   "unit": "s3"
+  },
+  {
+   "text": "capable",
+   "start": 32.1,
+   "end": 32.535,
+   "unit": "s3"
+  },
+  {
+   "text": "d'enchaîner",
+   "start": 32.535,
+   "end": 33.105,
+   "unit": "s3"
+  },
+  {
+   "text": "des",
+   "start": 33.105,
+   "end": 33.36,
+   "unit": "s3"
+  },
+  {
+   "text": "tâches",
+   "start": 33.36,
+   "end": 33.75,
+   "unit": "s3"
+  },
+  {
+   "text": "seul.",
+   "start": 33.75,
+   "end": 34.05,
+   "unit": "s3"
+  },
+  {
+   "text": "La",
+   "start": 34.05,
+   "end": 34.26,
+   "unit": "s3"
+  },
+  {
+   "text": "démonstration",
+   "start": 34.26,
+   "end": 34.965,
+   "unit": "s3"
+  },
+  {
+   "text": "est",
+   "start": 34.965,
+   "end": 35.22,
+   "unit": "s3"
+  },
+  {
+   "text": "belle,",
+   "start": 35.22,
+   "end": 35.565,
+   "unit": "s3"
+  },
+  {
+   "text": "mais",
+   "start": 35.565,
+   "end": 35.865,
+   "unit": "s3"
+  },
+  {
+   "text": "elle",
+   "start": 35.865,
+   "end": 36.165,
+   "unit": "s3"
+  },
+  {
+   "text": "est",
+   "start": 36.165,
+   "end": 36.42,
+   "unit": "s3"
+  },
+  {
+   "text": "préparée.",
+   "start": 36.42,
+   "end": 36.9,
+   "unit": "s3"
+  },
+  {
+   "text": "On",
+   "start": 36.9,
+   "end": 37.11,
+   "unit": "s3"
+  },
+  {
+   "text": "attend",
+   "start": 37.11,
+   "end": 37.5,
+   "unit": "s3"
+  },
+  {
+   "text": "les",
+   "start": 37.5,
+   "end": 37.755,
+   "unit": "s3"
+  },
+  {
+   "text": "premiers",
+   "start": 37.755,
+   "end": 38.235,
+   "unit": "s3"
+  },
+  {
+   "text": "retours",
+   "start": 38.235,
+   "end": 38.67,
+   "unit": "s3"
+  },
+  {
+   "text": "d'utilisateurs",
+   "start": 38.67,
+   "end": 39.375,
+   "unit": "s3"
+  },
+  {
+   "text": "avant",
+   "start": 39.375,
+   "end": 39.72,
+   "unit": "s3"
+  },
+  {
+   "text": "de",
+   "start": 39.72,
+   "end": 39.93,
+   "unit": "s3"
+  },
+  {
+   "text": "parler",
+   "start": 39.93,
+   "end": 40.32,
+   "unit": "s3"
+  },
+  {
+   "text": "de",
+   "start": 40.32,
+   "end": 40.53,
+   "unit": "s3"
+  },
+  {
+   "text": "révolution.",
+   "start": 40.53,
+   "end": 41.1,
+   "unit": "s3"
+  },
+  {
+   "text": "Les",
+   "start": 41.45,
+   "end": 41.705,
+   "unit": "s4"
+  },
+  {
+   "text": "centres",
+   "start": 41.705,
+   "end": 42.14,
+   "unit": "s4"
+  },
+  {
+   "text": "de",
+   "start": 42.14,
+   "end": 42.35,
+   "unit": "s4"
+  },
+  {
+   "text": "calcul",
+   "start": 42.35,
+   "end": 42.74,
+   "unit": "s4"
+  },
+  {
+   "text": "consomment",
+   "start": 42.74,
+   "end": 43.31,
+   "unit": "s4"
+  },
+  {
+   "text": "toujours",
+   "start": 43.31,
+   "end": 43.79,
+   "unit": "s4"
+  },
+  {
+   "text": "plus",
+   "start": 43.79,
+   "end": 44.09,
+   "unit": "s4"
+  },
+  {
+   "text": "d'électricité.",
+   "start": 44.09,
+   "end": 44.75,
+   "unit": "s4"
+  },
+  {
+   "text": "Les",
+   "start": 44.75,
+   "end": 45.005,
+   "unit": "s4"
+  },
+  {
+   "text": "fabricants",
+   "start": 45.005,
+   "end": 45.575,
+   "unit": "s4"
+  },
+  {
+   "text": "promettent",
+   "start": 45.575,
+   "end": 46.145,
+   "unit": "s4"
+  },
+  {
+   "text": "des",
+   "start": 46.145,
+   "end": 46.4,
+   "unit": "s4"
+  },
+  {
+   "text": "puces",
+   "start": 46.4,
+   "end": 46.745,
+   "unit": "s4"
+  },
+  {
+   "text": "plus",
+   "start": 46.745,
+   "end": 47.045,
+   "unit": "s4"
+  },
+  {
+   "text": "sobres,",
+   "start": 47.045,
+   "end": 47.435,
+   "unit": "s4"
+  },
+  {
+   "text": "mais",
+   "start": 47.435,
+   "end": 47.735,
+   "unit": "s4"
+  },
+  {
+   "text": "la",
+   "start": 47.735,
+   "end": 47.945,
+   "unit": "s4"
+  },
+  {
+   "text": "demande",
+   "start": 47.945,
+   "end": 48.38,
+   "unit": "s4"
+  },
+  {
+   "text": "croît",
+   "start": 48.38,
+   "end": 48.725,
+   "unit": "s4"
+  },
+  {
+   "text": "plus",
+   "start": 48.725,
+   "end": 49.025,
+   "unit": "s4"
+  },
+  {
+   "text": "vite",
+   "start": 49.025,
+   "end": 49.325,
+   "unit": "s4"
+  },
+  {
+   "text": "que",
+   "start": 49.325,
+   "end": 49.58,
+   "unit": "s4"
+  },
+  {
+   "text": "les",
+   "start": 49.58,
+   "end": 49.835,
+   "unit": "s4"
+  },
+  {
+   "text": "économies",
+   "start": 49.835,
+   "end": 50.36,
+   "unit": "s4"
+  },
+  {
+   "text": "réalisées.",
+   "start": 50.36,
+   "end": 50.885,
+   "unit": "s4"
+  },
+  {
+   "text": "Voilà",
+   "start": 51.235,
+   "end": 51.58,
+   "unit": "outro"
+  },
+  {
+   "text": "pour",
+   "start": 51.58,
+   "end": 51.88,
+   "unit": "outro"
+  },
+  {
+   "text": "cette",
+   "start": 51.88,
+   "end": 52.225,
+   "unit": "outro"
+  },
+  {
+   "text": "semaine.",
+   "start": 52.225,
+   "end": 52.66,
+   "unit": "outro"
+  },
+  {
+   "text": "Et",
+   "start": 52.66,
+   "end": 52.87,
+   "unit": "outro"
+  },
+  {
+   "text": "toi,",
+   "start": 52.87,
+   "end": 53.125,
+   "unit": "outro"
+  },
+  {
+   "text": "tu",
+   "start": 53.125,
+   "end": 53.335,
+   "unit": "outro"
+  },
+  {
+   "text": "fais",
+   "start": 53.335,
+   "end": 53.635,
+   "unit": "outro"
+  },
+  {
+   "text": "confiance",
+   "start": 53.635,
+   "end": 54.16,
+   "unit": "outro"
+  },
+  {
+   "text": "à",
+   "start": 54.16,
+   "end": 54.34,
+   "unit": "outro"
+  },
+  {
+   "text": "un",
+   "start": 54.34,
+   "end": 54.55,
+   "unit": "outro"
+  },
+  {
+   "text": "agent",
+   "start": 54.55,
+   "end": 54.895,
+   "unit": "outro"
+  },
+  {
+   "text": "pour",
+   "start": 54.895,
+   "end": 55.195,
+   "unit": "outro"
+  },
+  {
+   "text": "ton",
+   "start": 55.195,
+   "end": 55.45,
+   "unit": "outro"
+  },
+  {
+   "text": "agenda",
+   "start": 55.45,
+   "end": 55.84,
+   "unit": "outro"
+  },
+  {
+   "text": "?",
+   "start": 55.84,
+   "end": 56.02,
+   "unit": "outro"
+  }
+ ]
+}

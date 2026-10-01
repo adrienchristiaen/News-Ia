@@ -1,0 +1,29 @@
+{
+  "name": "news-ia-web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "next dev",
+    "build": "node scripts/sync-assets.mjs && next build",
+    "start": "npx serve out"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "private": "true",
+  "dependencies": {
+    "@fontsource/im-fell-english-sc": "^5.3.0",
+    "@fontsource/playfair-display": "^5.3.0",
+    "@fontsource/source-serif-4": "^5.3.0",
+    "next": "^16.3.8",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.4",
+    "@types/react": "^19.3.0",
+    "typescript": "^5.9.3"
+  }
+}

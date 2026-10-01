@@ -1,0 +1,12 @@
+Metadata-Version: 2.4
+Name: newsia
+Version: 0.1.0
+Summary: Veille IA hebdomadaire : collecte, tri, brouillon de script, alignement des sous-titres.
+Requires-Python: >=3.10
+Requires-Dist: feedparser>=6.0
+Provides-Extra: llm
+Requires-Dist: anthropic>=0.40; extra == "llm"
+Provides-Extra: speech
+Requires-Dist: faster-whisper>=1.0; extra == "speech"
+Provides-Extra: dev
+Requires-Dist: pytest>=8; extra == "dev"

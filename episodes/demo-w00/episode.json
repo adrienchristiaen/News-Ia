@@ -1,0 +1,70 @@
+{
+  "id": "demo-w00",
+  "number": 0,
+  "title": "Numéro de démonstration",
+  "date": "2026-10-02",
+  "language": "fr",
+  "demo": true,
+  "hook": "Cette semaine, un modèle ouvert bouscule les géants, l'Europe fixe une date, et un agent promet de travailler à ta place.",
+  "segments": [
+    {
+      "id": "s1",
+      "kicker": "MODÈLES",
+      "headline": "Orion, le modèle ouvert qui surprend",
+      "text": "La société fictive Acme publie Orion, un modèle ouvert. Sur les tests publiés, il rattrape des modèles fermés dix fois plus gros. Reste à vérifier ces résultats par des évaluations indépendantes.",
+      "stat": {"value": "10×", "label": "plus petit que ses rivaux fermés (exemple)"},
+      "sources": [{"title": "Acme launches Orion (exemple)", "url": "https://example.com/acme-orion", "publisher": "Exemple Média"}],
+      "visual": {"kind": "engraving", "alt": "Une petite fusée de papier qui dépasse un grand paquebot de fer"}
+    },
+    {
+      "id": "s2",
+      "kicker": "RÉGULATION",
+      "headline": "L'Europe confirme sa date",
+      "text": "Le calendrier d'application des règles européennes sur l'IA est confirmé. Concrètement, les entreprises ont jusqu'à l'an prochain pour documenter leurs systèmes à risque. Pour les particuliers, rien ne change demain.",
+      "stat": null,
+      "sources": [{"title": "AI Act: enforcement date confirmed (exemple)", "url": "https://example.org/ai-act-date", "publisher": "Exemple Régulation"}],
+      "visual": {"kind": "engraving", "alt": "Un sablier géant posé sur une pile de dossiers"}
+    },
+    {
+      "id": "s3",
+      "kicker": "AGENTS",
+      "headline": "L'agent qui travaille à ta place ?",
+      "text": "Un éditeur annonce un agent capable d'enchaîner des tâches seul. La démonstration est belle, mais elle est préparée. On attend les premiers retours d'utilisateurs avant de parler de révolution.",
+      "stat": null,
+      "sources": [{"title": "Un agent autonome présenté (exemple)", "url": "https://example.com/agent-demo", "publisher": "Exemple Média"}],
+      "visual": {"kind": "engraving", "alt": "Un automate de salon qui tient une plume au-dessus d'un registre"}
+    },
+    {
+      "id": "s4",
+      "kicker": "ÉNERGIE",
+      "headline": "Le coût caché des modèles",
+      "text": "Les centres de calcul consomment toujours plus d'électricité. Les fabricants promettent des puces plus sobres, mais la demande croît plus vite que les économies réalisées.",
+      "stat": {"value": "+20 %", "label": "consommation annuelle, valeur d'exemple"},
+      "sources": [{"title": "Data centers et électricité (exemple)", "url": "https://example.org/datacenters-energy", "publisher": "Exemple Énergie"}],
+      "visual": {"kind": "engraving", "alt": "Une cheminée d'usine dont la fumée dessine un circuit imprimé"}
+    }
+  ],
+  "outro": "Voilà pour cette semaine. Et toi, tu fais confiance à un agent pour ton agenda ?",
+  "social": {
+    "caption": "L'actu IA de la semaine en 1 minute, sans hype. (Numéro de démonstration, contenu fictif.)",
+    "hashtags": ["#IA", "#actuIA", "#tech"]
+  },
+  "gazette": {
+    "headline": "Un modèle ouvert défie les géants fermés",
+    "lede": "Orion, publié par la société fictive Acme, rivalise avec des modèles bien plus gros. L'Europe, elle, fixe enfin sa date. Notre revue de la semaine, sans poudre aux yeux.",
+    "articles": [
+      {"segment": "s1", "headline": "Orion, petit modèle, grandes ambitions", "body": [
+        "Acme a publié Orion, un modèle dont les poids sont ouverts. Les résultats annoncés sur des tests publics le placent au niveau de modèles fermés bien plus volumineux.",
+        "Prudence cependant : ces chiffres viennent de l'éditeur lui-même. Tant que des équipes indépendantes ne les ont pas reproduits, il faut les lire comme une promesse, pas comme un fait établi."]},
+      {"segment": "s2", "headline": "Règles européennes : la date est tombée", "body": [
+        "Le calendrier d'application des règles européennes est confirmé. Les entreprises disposent d'un délai pour documenter leurs systèmes à risque.",
+        "Pour le grand public, aucun changement immédiat. Pour les équipes juridiques et techniques, le compte à rebours commence."]},
+      {"segment": "s3", "headline": "Agents autonomes : belle démonstration, preuve à faire", "body": [
+        "Un éditeur présente un agent capable d'enchaîner des tâches sans surveillance. La vidéo est impressionnante, mais elle est préparée.",
+        "Les premiers retours de vrais utilisateurs diront si l'agent tient ses promesses hors du laboratoire."]},
+      {"segment": "s4", "headline": "L'électricité, angle mort de l'IA", "body": [
+        "La consommation des centres de calcul continue de grimper. Les puces plus sobres aident, mais la demande progresse plus vite que les gains d'efficacité.",
+        "La question n'est plus seulement de savoir ce que l'IA sait faire, mais ce qu'elle coûte."]}
+    ]
+  }
+}

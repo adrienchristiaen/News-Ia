@@ -1,0 +1,10 @@
+feedparser>=6.0
+
+[dev]
+pytest>=8
+
+[llm]
+anthropic>=0.40
+
+[speech]
+faster-whisper>=1.0

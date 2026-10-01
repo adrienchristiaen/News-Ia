@@ -1,0 +1,5 @@
+<?xml version="1.0"?><rss version="2.0"><channel><title>A</title>
+<item><title>Acme launches Orion open source model with new benchmark</title><link>https://example.com/a/orion</link><pubDate>Wed, 30 Sep 2026 09:00:00 GMT</pubDate><description>Acme releases Orion.</description></item>
+<item><title>Sponsored: webinar on cloud deals</title><link>https://example.com/a/promo</link><pubDate>Wed, 30 Sep 2026 10:00:00 GMT</pubDate><description>promo</description></item>
+<item><title>Vieille annonce de l'an dernier</title><link>https://example.com/a/old</link><pubDate>Mon, 01 Jan 2024 10:00:00 GMT</pubDate><description>old</description></item>
+</channel></rss>
