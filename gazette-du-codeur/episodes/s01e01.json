@@ -1,0 +1,327 @@
+{
+  "series": "La Gazette du Codeur",
+  "tagline": "L'actu hebdomadaire des développeurs Gemini CLI",
+  "season": 1,
+  "episode": 1,
+  "date": "2026-10-12",
+  "dateLabel": "Lundi 12 octobre 2026",
+  "theme": "Mieux piloter Gemini CLI : contexte, sous-agents, mémoire et skills",
+  "topStrip": [
+    {
+      "title": "Réglages par défaut",
+      "lines": [
+        "compressionThreshold · 0.5",
+        "hideContextPercentage · true",
+        "truncateToolOutputThreshold · 40000"
+      ],
+      "source": "settings"
+    },
+    {
+      "title": "Dernière édition",
+      "lines": [
+        "Gemini CLI stable v0.63.0",
+        "publiée le 6 octobre 2026",
+        "Plans exécutés sans confirmation en mode non interactif"
+      ],
+      "source": "changelog"
+    }
+  ],
+  "headline": {
+    "kicker": "À la une",
+    "title": "Votre contexte fond comme neige",
+    "deck": "Garder la main sur la mémoire de travail de Gemini CLI.",
+    "media": {
+      "type": "scene",
+      "name": "contexte",
+      "caption": "Illustration : la fenêtre se remplit, puis /compress la résume."
+    },
+    "body": [
+      "Gemini CLI travaille avec une mémoire limitée : la fenêtre de contexte. Quand elle se remplit, la CLI résume la conversation pour faire de la place : c'est la compression. Par défaut, elle se lance quand la fenêtre est pleine à moitié (réglage `model.compressionThreshold` = `0.5`). La doc donne `0.2` et `0.3` comme exemples de seuils plus bas[^settings].",
+      "Deux astuces. Affichez la jauge de contexte, masquée par défaut : mettez `ui.footer.hideContextPercentage` à `false`[^settings]. Et lancez `/compress` vous-même pour résumer la conversation[^cmd]. Ce résumé ne vit que dans la session : ce qui doit durer va dans `GEMINI.md`[^addy]. Avant de compresser, `/resume save <nom>` garde un point de retour[^cmd]."
+    ],
+    "byline": "D'après la documentation officielle et Addy Osmani"
+  },
+  "sideStory": {
+    "kicker": "Sous le capot",
+    "title": "Ce que la compression garde",
+    "dropcap": true,
+    "body": [
+      "D'après l'analyse d'un tiers (octobre 2025), la CLI garde intacts les échanges les plus récents (environ 30 %) et transforme le reste en un court résumé : objectif, connaissances clés, état des fichiers, actions récentes, plan[^liu]. Le code a pu changer depuis.",
+      "Un « hook » (petit script lancé à un moment précis) nommé `PreCompress` permet d'agir juste avant, par exemple pour sauvegarder la session[^hooks]."
+    ]
+  },
+  "articles": [
+    {
+      "id": "subagents",
+      "kicker": "Sous-agents",
+      "title": "Sous-agents : la poubelle à contexte",
+      "size": "large",
+      "media": {
+        "type": "scene",
+        "name": "terminal",
+        "lines": [
+          "> @codebase_investigator",
+          "  cartographie le flux d'auth",
+          "> @generalist",
+          "  met à jour les en-têtes licence"
+        ],
+        "caption": "Exemples du billet Google."
+      },
+      "body": [
+        "Un sous-agent est un assistant spécialisé que la CLI appelle pour une tâche précise. Il travaille dans sa propre fenêtre de contexte et ne renvoie que le résultat : la conversation principale reste propre. Google y voit un moyen d'éviter la pollution du contexte[^subblog]. Idéal pour les tâches qui produisent beaucoup de texte : recherches dans le code, séries de tests, refactors. On l'appelle avec `@nom`[^cmd].",
+        "Trois réflexes : limiter les outils de chaque sous-agent, rédiger une description claire pour qu'il soit bien choisi, et éviter d'en lancer plusieurs en parallèle pour modifier du code (conflits, quotas vite épuisés)[^subblog]. Chaque sous-agent peut aussi utiliser un modèle plus léger via sa clé `model`. Attention : `/model` ne le modifie pas[^sub][^model]."
+      ],
+      "code": {
+        "label": "settings.json · surcharger un sous-agent",
+        "text": "{\n  \"agents\": { \"overrides\": {\n    \"codebase_investigator\": {\n      \"modelConfig\": {\n        \"model\": \"gemini-3-flash-preview\" }\n    }\n  } }\n}",
+        "source": "sub"
+      }
+    },
+    {
+      "id": "reprise",
+      "kicker": "Historique",
+      "title": "Revenir en arrière",
+      "size": "medium",
+      "body": [
+        "`/resume save x` enregistre un point de départ et `/resume resume x` y revient : on essaie une autre piste sans perdre la première[^session]. `/rewind` (ou Échap deux fois) revient juste avant une erreur : la conversation, le code, ou les deux au choix[^session].",
+        "`/restore` remet les fichiers dans l'état d'avant un appel d'outil[^cmd]. Il ne défait pas les effets extérieurs (une migration de base de données, par exemple) et demande de lancer la CLI avec `--checkpointing`[^addy]."
+      ]
+    },
+    {
+      "id": "memoire",
+      "kicker": "Mémoire",
+      "title": "Mémoire : jusqu'au « dreaming »",
+      "size": "half",
+      "body": [
+        "Lamis Mukta (Anthropic) résume un an d'évolution de la mémoire des agents. D'abord un fichier d'instructions (`CLAUDE.md`), efficace mais qui grossit trop. Puis une mémoire que l'agent lit et écrit seul. Puis les skills, chargés seulement au besoin. Aujourd'hui : des fichiers Markdown que l'agent parcourt avec des outils de recherche comme grep. Sa consigne : laisser la mémoire grandir, mais donner à l'agent de quoi y chercher[^dream].",
+        "Nouveauté : le « dreaming » (rêver). Hors session, des sous-agents relisent un lot de conversations passées, repèrent les erreurs qui reviennent et proposent des corrections de la mémoire. Un humain valide[^dream]. Aucun chiffre de gain n'est donné.",
+        "Gemini CLI a une fonction proche, **Auto Memory** (expérimentale) : elle tire des souvenirs et des skills des sessions passées[^memtuto]. Ce rapprochement est de mon fait, pas celui de la conférence."
+      ]
+    },
+    {
+      "id": "boris",
+      "kicker": "Conférence",
+      "title": "La masterclass de Boris Cherny",
+      "size": "half",
+      "body": [
+        "Résumé de l'atelier « Mastering Claude Code in 30 minutes » avec Boris Cherny, créateur de Claude Code (la vidéo en français semble en être une version, à confirmer)[^boris]. Il parle de Claude Code, mais trois idées valent aussi pour Gemini CLI :",
+        "**Commencer par poser des questions sur le code** : chez Anthropic, l'intégration d'un nouvel arrivant serait passée de 2-3 semaines à 2-3 jours, selon l'orateur. **Donner à l'agent un moyen de vérifier son travail** (tests, captures d'écran) : le résultat devient souvent presque parfait après 2 à 3 essais. **Travailler en parallèle** sur plusieurs copies du projet (worktrees git)[^boris]. Gemini CLI a une page sur les worktrees (expérimentale)[^docs]."
+      ]
+    },
+    {
+      "id": "skills",
+      "kicker": "Skills",
+      "title": "Skills : lesquels installer ?",
+      "size": "large",
+      "body": [
+        "Tout le monde sait ce qu'est un skill ; le plus dur est de choisir lesquels installer. Les plus affichés de la galerie officielle d'extensions : **superpowers** (tests d'abord, débogage), **context7** (documentation à jour), **chrome-devtools-mcp** (outils Chrome pour l'agent), le serveur MCP **github** et **last30days-skill** (recherche sur les 30 derniers jours)[^gallery]. Ce sont des extensions de tiers, non vérifiées par Google ; le chiffre sur chaque carte n'est pas expliqué et ne prouve pas la qualité.",
+        "Pour des skills publiés par les éditeurs eux-mêmes (Google, Vercel, Stripe, Cloudflare, Sentry…), voir la liste communautaire VoltAgent[^volt] et le dépôt d'Anthropic[^anth]. Pour installer : `gemini skills install <dépôt> --consent`. Chaque skill activé ajoute son nom et sa description à chaque session : mieux vaut en avoir peu, bien choisis[^skills]."
+      ]
+    },
+    {
+      "id": "praticien",
+      "kicker": "Astuces",
+      "title": "Petits gestes",
+      "size": "medium",
+      "body": [
+        "D'Addy Osmani[^addy] : `@./foo.py` ajoute un fichier précis à la demande ; `!` seul ouvre un mode terminal persistant ; `--include-directories \"../back:../front\"` charge plusieurs dossiers ; un fichier `.gemini/commands/test/gen.toml` crée la commande `/test:gen`, partageable avec l'équipe via le dépôt."
+      ],
+      "code": {
+        "label": "Envoyer un résultat à la CLI",
+        "text": "npm test 2>&1 | gemini -p \\\n  \"Qu'est-ce qui a cassé ?\"",
+        "source": "addy"
+      }
+    }
+  ],
+  "boxes": [],
+  "ads": [],
+  "index": [
+    {
+      "label": "Contexte",
+      "anchor": "une"
+    },
+    {
+      "label": "Compression",
+      "anchor": "plan"
+    },
+    {
+      "label": "Sous-agents",
+      "anchor": "subagents"
+    },
+    {
+      "label": "Mémoire",
+      "anchor": "memoire"
+    },
+    {
+      "label": "Skills",
+      "anchor": "skills"
+    },
+    {
+      "label": "Sources",
+      "anchor": "sources"
+    }
+  ],
+  "sources": [
+    {
+      "id": "settings",
+      "title": "Settings reference",
+      "publisher": "Documentation officielle Gemini CLI",
+      "url": "https://geminicli.com/docs/cli/settings/",
+      "kind": "officiel"
+    },
+    {
+      "id": "cmd",
+      "title": "Command reference",
+      "publisher": "Documentation officielle Gemini CLI",
+      "url": "https://geminicli.com/docs/reference/commands/",
+      "kind": "officiel"
+    },
+    {
+      "id": "session",
+      "title": "Manage sessions and history",
+      "publisher": "Documentation officielle Gemini CLI",
+      "url": "https://geminicli.com/docs/cli/tutorials/session-management/",
+      "kind": "officiel"
+    },
+    {
+      "id": "sub",
+      "title": "Subagents",
+      "publisher": "Documentation officielle Gemini CLI",
+      "url": "https://geminicli.com/docs/core/subagents/",
+      "kind": "officiel"
+    },
+    {
+      "id": "model",
+      "title": "Model selection (/model)",
+      "publisher": "Documentation officielle Gemini CLI",
+      "url": "https://geminicli.com/docs/cli/model/",
+      "kind": "officiel"
+    },
+    {
+      "id": "skills",
+      "title": "Agent Skills",
+      "publisher": "Documentation officielle Gemini CLI",
+      "url": "https://geminicli.com/docs/cli/skills/",
+      "kind": "officiel"
+    },
+    {
+      "id": "hooks",
+      "title": "Hooks",
+      "publisher": "Documentation officielle Gemini CLI",
+      "url": "https://geminicli.com/docs/hooks/",
+      "kind": "officiel"
+    },
+    {
+      "id": "gallery",
+      "title": "Extensions gallery",
+      "publisher": "Gemini CLI, extensions tierces",
+      "url": "https://geminicli.com/extensions/",
+      "kind": "officiel"
+    },
+    {
+      "id": "changelog",
+      "title": "Release notes, stable v0.63.0 (6 oct. 2026)",
+      "publisher": "Documentation officielle Gemini CLI",
+      "url": "https://geminicli.com/docs/changelogs/latest/",
+      "kind": "officiel"
+    },
+    {
+      "id": "subblog",
+      "title": "Subagents have arrived in Gemini CLI (15 avr. 2026)",
+      "publisher": "Google Developers Blog",
+      "url": "https://developers.googleblog.com/subagents-have-arrived-in-gemini-cli/",
+      "kind": "officiel"
+    },
+    {
+      "id": "volt",
+      "title": "awesome-agent-skills",
+      "publisher": "VoltAgent, liste communautaire",
+      "url": "https://github.com/VoltAgent/awesome-agent-skills",
+      "kind": "communauté"
+    },
+    {
+      "id": "anth",
+      "title": "anthropics/skills",
+      "publisher": "Anthropic, GitHub",
+      "url": "https://github.com/anthropics/skills",
+      "kind": "officiel"
+    },
+    {
+      "id": "memtuto",
+      "title": "Manage context and memory",
+      "publisher": "Documentation officielle Gemini CLI",
+      "url": "https://geminicli.com/docs/cli/tutorials/memory-management/",
+      "kind": "officiel"
+    },
+    {
+      "id": "dream",
+      "title": "Lamis Mukta, Learning while you sleep: Beyond memory to dreaming (AI Native DevCon, juin 2026), vidéo résumée d'après une transcription",
+      "publisher": "YouTube",
+      "url": "https://youtu.be/tTcxVv8HHNw",
+      "kind": "vidéo"
+    },
+    {
+      "id": "boris",
+      "title": "MasterClass du créateur de Claude Code : Boris Cherny, vidéo résumée d'après la retranscription de l'atelier anglais",
+      "publisher": "YouTube",
+      "url": "https://youtu.be/4PLbGLQZuTE",
+      "kind": "vidéo"
+    },
+    {
+      "id": "docs",
+      "title": "Documentation, index (page Git worktrees)",
+      "publisher": "Documentation officielle Gemini CLI",
+      "url": "https://geminicli.com/docs/cli/git-worktrees/",
+      "kind": "officiel"
+    },
+    {
+      "id": "addy",
+      "title": "Gemini CLI Tips and Tricks (1er janv. 2026)",
+      "publisher": "Addy Osmani",
+      "url": "https://addyosmani.com/blog/gemini-cli/",
+      "kind": "praticien"
+    },
+    {
+      "id": "liu",
+      "title": "Dive into Context Engineering (18 oct. 2025)",
+      "publisher": "Leslie Liu, analyse tierce",
+      "url": "https://leslieo2.github.io/posts/context-engineering/",
+      "kind": "tiers"
+    }
+  ],
+  "brief": {
+    "title": "En bref",
+    "items": [
+      {
+        "label": "Compression",
+        "text": "Elle démarre à 50 % de la fenêtre. `/compress` la lance à la main.",
+        "anchor": "une"
+      },
+      {
+        "label": "Jauge de contexte",
+        "text": "Masquée par défaut : `ui.footer.hideContextPercentage` à `false`.",
+        "anchor": "une"
+      },
+      {
+        "label": "Sous-agents",
+        "text": "À utiliser pour les tâches qui produisent beaucoup de texte : `@nom`.",
+        "anchor": "subagents"
+      },
+      {
+        "label": "Retour en arrière",
+        "text": "`/resume save` pour un point de retour, `/rewind` pour annuler.",
+        "anchor": "reprise"
+      },
+      {
+        "label": "Mémoire",
+        "text": "Des fichiers Markdown et de la recherche. Auto Memory arrive (expérimental).",
+        "anchor": "memoire"
+      },
+      {
+        "label": "Skills",
+        "text": "En installer peu, bien choisis : superpowers, context7…",
+        "anchor": "skills"
+      }
+    ]
+  }
+}

@@ -1,0 +1,452 @@
+<title>__TITLE__</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=IM+Fell+English+SC&family=IM+Fell+English:ital@0;1&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Special+Elite&family=UnifrakturMaguntia&display=swap">
+<style>
+/* Layout: a single printed broadsheet on aged parchment, framed by a double rule;
+   masthead, ear boxes, woodtype headline, then a 6-column grid of stories.
+   Deliberately single-theme: a newspaper is paper in every light. */
+:root {
+  color-scheme: light;
+  --paper: #e8dab8;
+  --paper-deep: #d9c79d;
+  --ink: #241a0f;
+  --ink-soft: #55432b;
+  --rule: #3b2b18;
+  --blood: #7b2416;
+  --photo: #3a2e20;
+  --photo-hi: #cdb88b;
+
+  --f-mast: "UnifrakturMaguntia", "Old English Text MT", "Times New Roman", serif;
+  --f-head: "Alfa Slab One", "Rockwell Extra Bold", "Georgia", serif;
+  --f-label: "IM Fell English SC", "Palatino Linotype", "Georgia", serif;
+  --f-deck: "IM Fell English", "Palatino Linotype", "Georgia", serif;
+  --f-body: "Old Standard TT", "Georgia", "Times New Roman", serif;
+  --f-type: "Special Elite", "Courier New", monospace;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--paper-deep);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.5;
+  padding-inline: 16px;
+  padding-block: 24px 40px;
+}
+a { color: inherit; text-decoration-color: var(--ink-soft); text-underline-offset: 2px; }
+a:focus-visible { outline: 2px solid var(--blood); outline-offset: 2px; }
+
+.paper {
+  position: relative;
+  max-width: 1120px;
+  margin-inline: auto;
+  padding: clamp(14px, 3vw, 34px);
+  background:
+    radial-gradient(ellipse at 15% 10%, rgba(255,250,230,.55), transparent 55%),
+    radial-gradient(ellipse at 85% 90%, rgba(120,90,40,.18), transparent 60%),
+    radial-gradient(circle at 70% 30%, rgba(120,90,40,.08), transparent 35%),
+    var(--paper);
+  border: 1px solid var(--rule);
+  box-shadow: 0 1px 0 var(--rule), 0 18px 40px -20px rgba(36,26,15,.6), inset 0 0 90px rgba(110,80,35,.28);
+}
+.frame { border: 3px double var(--rule); padding: clamp(10px, 2vw, 22px); }
+
+/* ——— Masthead ——— */
+.mast { display: grid; grid-template-columns: 76px 1fr 76px; align-items: center; gap: 12px; }
+.crest { width: 76px; height: 76px; color: var(--ink); }
+.mast-title { text-align: center; min-width: 0; }
+.mast-title h1 {
+  margin: 0; font-family: var(--f-mast); font-weight: 400; line-height: .9;
+  font-size: clamp(2.4rem, 8vw, 5.6rem); letter-spacing: .01em;
+}
+.mast-title .school {
+  display: flex; align-items: center; gap: 12px; justify-content: center;
+  font-family: var(--f-mast); font-size: clamp(1.1rem, 3vw, 1.9rem); margin-top: 4px;
+}
+.mast-title .school::before, .mast-title .school::after { content: ""; flex: 1; border-top: 1px solid var(--rule); max-width: 160px; }
+.tagline {
+  margin-top: 10px; padding-block: 4px; border-block: 1px solid var(--rule);
+  font-family: var(--f-label); text-align: center; letter-spacing: .14em; font-size: .78rem; text-transform: uppercase;
+}
+
+/* ——— Ear strip ——— */
+.ears { display: grid; grid-template-columns: 1fr 1.1fr 1fr; gap: 12px; margin-top: 12px; align-items: stretch; }
+.ear { border: 1px solid var(--rule); padding: 8px 10px; font-size: .82rem; line-height: 1.35; min-width: 0; }
+.ear h3 { margin: 0 0 4px; font-family: var(--f-label); font-weight: 400; font-size: .95rem; letter-spacing: .06em; border-bottom: 1px solid var(--rule); }
+.ear ul { margin: 0; padding: 0; list-style: none; }
+.ear li::before { content: "❧ "; color: var(--ink-soft); }
+.ear .src { font-family: var(--f-type); font-size: .7rem; color: var(--ink-soft); }
+.edition { text-align: center; display: grid; align-content: center; gap: 2px; border: 3px double var(--rule); padding: 8px; }
+.edition .se { font-family: var(--f-head); font-size: clamp(1.1rem, 2.6vw, 1.6rem); letter-spacing: .04em; text-transform: uppercase; line-height: 1.05; }
+.edition .date { font-family: var(--f-label); letter-spacing: .08em; }
+.edition .price { font-family: var(--f-type); font-size: .78rem; }
+.edition .etitle { font-family: var(--f-deck); font-style: italic; font-size: 1rem; line-height: 1.25; text-wrap: balance; }
+
+/* ——— En bref ——— */
+.brief { margin-top: 14px; border: 3px double var(--rule); padding: 10px 14px 14px; }
+.brief h2 { margin: 0 0 10px; font-family: var(--f-head); font-weight: 400; text-transform: uppercase; letter-spacing: .08em; font-size: 1.2rem; text-align: center; border-bottom: 1px solid var(--rule); padding-bottom: 6px; }
+.brief-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.brief-item { display: grid; gap: 2px; align-content: start; padding: 8px 10px; border: 1px solid var(--rule); background: rgba(59,43,24,.06); text-decoration: none; min-width: 0; }
+.brief-item strong { font-family: var(--f-head); font-weight: 400; text-transform: uppercase; font-size: .95rem; letter-spacing: .03em; }
+.brief-item span { font-size: .9rem; line-height: 1.4; }
+.brief-item:hover { background: rgba(123,36,22,.1); }
+.brief-item:focus-visible { outline: 2px solid var(--blood); outline-offset: 2px; }
+
+/* ——— Headline ——— */
+.headline { margin-top: 18px; padding-top: 12px; border-top: 4px solid var(--rule); text-align: center; }
+.headline h2 {
+  margin: 0; font-family: var(--f-head); font-weight: 400; text-transform: uppercase;
+  font-size: clamp(2.2rem, 7.4vw, 5.6rem); line-height: .95; letter-spacing: .01em; text-wrap: balance;
+}
+.headline .deck { margin: 8px auto 0; font-family: var(--f-deck); font-style: italic; font-size: clamp(1.1rem, 2.4vw, 1.55rem); max-width: 40ch; text-wrap: balance; }
+
+/* ——— Hero row ——— */
+.hero { display: grid; grid-template-columns: 2.4rem minmax(0,2.1fr) minmax(0,1fr); gap: 16px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--rule); }
+.vkicker {
+  writing-mode: vertical-rl; transform: rotate(180deg); text-align: center;
+  background: var(--ink); color: var(--paper); font-family: var(--f-head); text-transform: uppercase;
+  letter-spacing: .2em; font-size: 1.15rem; padding: 10px 4px;
+}
+.col { min-width: 0; }
+.col + .col { border-left: 1px solid var(--rule); padding-left: 16px; }
+.hero .photo-col { border-left: 0; padding-left: 0; display: grid; gap: 14px; align-content: start; }
+.lead { column-count: 2; column-gap: 18px; column-rule: 1px solid var(--rule); }
+.body p { margin: 0 0 .7em; text-align: justify; hyphens: auto; }
+.byline { font-family: var(--f-label); font-size: .82rem; letter-spacing: .05em; color: var(--ink-soft); margin-top: .6em; }
+.kicker { font-family: var(--f-label); letter-spacing: .14em; text-transform: uppercase; font-size: .8rem; color: var(--blood); }
+.side h3 { margin: 2px 0 8px; font-family: var(--f-head); font-weight: 400; text-transform: uppercase; font-size: 1.55rem; line-height: 1; text-wrap: balance; }
+.dropcap > p:first-child::first-letter {
+  float: left; font-family: var(--f-mast); font-size: 4.6em; line-height: .78; padding: 4px 8px 0 0; color: var(--ink);
+}
+
+code { font-family: var(--f-type); font-size: .86em; background: rgba(59,43,24,.1); padding: 0 3px; border-radius: 2px; overflow-wrap: anywhere; }
+sup.ref { font-family: var(--f-type); font-size: .66em; line-height: 0; }
+sup.ref a { text-decoration: none; color: var(--blood); padding-inline: 1px; }
+
+/* ——— Moving photographs ——— */
+figure.photo { margin: 0; }
+.plate {
+  position: relative; aspect-ratio: 4 / 3; max-width: 100%; overflow: hidden;
+  background: radial-gradient(ellipse at 50% 40%, #8a7550, var(--photo) 75%);
+  border: 6px solid var(--ink); outline: 1px solid var(--rule); outline-offset: 3px;
+  filter: sepia(.55) contrast(1.05);
+}
+.plate > svg, .plate > video, .plate > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.plate::after {
+  content: ""; position: absolute; inset: -20%; pointer-events: none; mix-blend-mode: overlay; opacity: .5;
+  background:
+    repeating-radial-gradient(circle at 30% 20%, rgba(255,255,255,.07) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(0,0,0,.06) 0 1px, transparent 1px 97px);
+  animation: grain 1.2s steps(4) infinite;
+}
+.plate::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  box-shadow: inset 0 0 60px 18px rgba(20,12,4,.75);
+  animation: flicker 5s ease-in-out infinite;
+}
+@keyframes grain { 0%{transform:translate(0,0)} 25%{transform:translate(-3%,2%)} 50%{transform:translate(2%,-3%)} 75%{transform:translate(-2%,-1%)} 100%{transform:translate(0,0)} }
+@keyframes flicker { 0%,100%{opacity:1} 47%{opacity:.86} 50%{opacity:1} 53%{opacity:.9} }
+figcaption { font-family: var(--f-deck); font-style: italic; font-size: .86rem; text-align: center; margin-top: 8px; color: var(--ink-soft); }
+
+/* scene ink colours */
+.s-ink { fill: var(--photo-hi); }
+.s-dark { fill: var(--photo); }
+.s-line { stroke: var(--photo-hi); fill: none; stroke-width: 3; stroke-linecap: round; }
+.s-text { fill: var(--photo-hi); font-family: var(--f-type); }
+.s-big { fill: var(--photo-hi); font-family: var(--f-head); }
+
+/* Choixpeau */
+.hat { transform-origin: 200px 150px; animation: hatwobble 4s ease-in-out infinite; }
+.brim-mouth { transform-origin: 200px 128px; animation: mouth 4s ease-in-out infinite; }
+@keyframes hatwobble { 0%,100%{transform:rotate(-3deg)} 50%{transform:rotate(3deg)} }
+@keyframes mouth { 0%,55%,100%{transform:scaleY(.3)} 62%,70%,80%{transform:scaleY(1.3)} 66%,75%{transform:scaleY(.6)} }
+.seq > g { opacity: 0; animation: seq 16s infinite; }
+.seq > g:nth-child(2) { animation-delay: 4s; }
+.seq > g:nth-child(3) { animation-delay: 8s; }
+.seq > g:nth-child(4) { animation-delay: 12s; }
+@keyframes seq { 0%{opacity:0} 3%,22%{opacity:1} 25%,100%{opacity:0} }
+.verdict { opacity: 0; animation: verdict 4s infinite; }
+@keyframes verdict { 0%,55%{opacity:0; transform: scale(.6)} 62%,95%{opacity:1; transform: scale(1)} 100%{opacity:0} }
+.verdict { transform-box: fill-box; transform-origin: center; }
+
+/* Éclair */
+.bolt { animation: bolt 3s infinite; }
+@keyframes bolt { 0%,8%,14%,100%{opacity:.15} 10%,16%,20%{opacity:1} }
+.hand { transform-origin: 120px 160px; animation: spin 1.4s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.flashbg { animation: flashbg 3s infinite; }
+@keyframes flashbg { 0%,8%,22%,100%{opacity:0} 10%,16%{opacity:.35} }
+
+/* Hibou */
+.owl { animation: fly 9s linear infinite; }
+@keyframes fly { 0%{transform:translate(-120px,40px)} 50%{transform:translate(200px,-10px)} 100%{transform:translate(520px,30px)} }
+.wing { transform-box: fill-box; transform-origin: 50% 100%; animation: flap .45s ease-in-out infinite alternate; }
+@keyframes flap { from{transform:scaleY(1)} to{transform:scaleY(-.6)} }
+.stars circle { animation: twinkle 3s ease-in-out infinite; }
+.stars circle:nth-child(2n) { animation-delay: 1.2s; }
+.stars circle:nth-child(3n) { animation-delay: 2s; }
+@keyframes twinkle { 0%,100%{opacity:.3} 50%{opacity:1} }
+
+/* Fenêtre de contexte */
+.ctx-fill { transform-box: fill-box; transform-origin: left center; animation: ctxfill 12s ease-in-out infinite; }
+@keyframes ctxfill { 0%,100%{transform:scaleX(.18)} 56%{transform:scaleX(.5)} 61%{transform:scaleX(.5)} 70%{transform:scaleX(.18)} }
+.ctx-sum { opacity: 0; animation: ctxsum 12s infinite; }
+.ctx-sumlbl { opacity: 0; animation: ctxsum 12s infinite; }
+@keyframes ctxsum { 0%,60%{opacity:0} 70%,96%{opacity:1} 100%{opacity:0} }
+.ctx-flash { opacity: 0; animation: ctxflash 12s infinite; }
+@keyframes ctxflash { 0%,54%{opacity:0} 57%,66%{opacity:1} 70%,100%{opacity:0} }
+
+/* Terminal (generic scene) */
+.cursor { animation: blink 1s steps(2) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.term-line { opacity: 0; animation: termline var(--dur) infinite; animation-delay: var(--d); }
+@keyframes termline { 0%{opacity:0} 2%,90%{opacity:1} 96%,100%{opacity:0} }
+
+/* ——— Stories grid ——— */
+.stories { display: grid; grid-template-columns: repeat(6, minmax(0,1fr)); gap: 0; margin-top: 18px; border-top: 4px solid var(--rule); }
+.story { padding: 14px 16px 10px; min-width: 0; border-bottom: 1px solid var(--rule); }
+.story.large { grid-column: span 4; }
+.story.medium { grid-column: span 2; }
+.story.half { grid-column: span 3; }
+.story:not(.first-in-row) { border-left: 1px solid var(--rule); }
+.story h3 { margin: 2px 0 10px; font-family: var(--f-head); font-weight: 400; text-transform: uppercase; line-height: 1; text-wrap: balance; }
+.story.large h3 { font-size: clamp(1.7rem, 3.6vw, 2.7rem); }
+.story.medium h3, .story.half h3 { font-size: clamp(1.3rem, 2.4vw, 1.7rem); }
+.story.large .layout { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.15fr); gap: 16px; align-items: start; }
+.story.large .body { column-count: 1; }
+.codebox { margin-top: 10px; border: 1px solid var(--rule); background: rgba(59,43,24,.07); }
+.codebox .lbl { font-family: var(--f-label); font-size: .78rem; letter-spacing: .06em; padding: 4px 8px; border-bottom: 1px solid var(--rule); }
+.codebox pre { margin: 0; padding: 8px; overflow-x: auto; font-family: var(--f-type); font-size: .76rem; line-height: 1.4; }
+
+/* ——— Boxed notes ——— */
+.boxes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 16px; }
+.box { border: 3px double var(--rule); padding: 10px 12px; min-width: 0; font-size: .92rem; }
+.box h4 { margin: 0 0 6px; font-family: var(--f-head); font-weight: 400; text-transform: uppercase; font-size: 1.05rem; letter-spacing: .03em; text-align: center; border-bottom: 1px solid var(--rule); padding-bottom: 4px; }
+.box p { margin: 0 0 .5em; }
+.box.unverified { border-style: dashed; border-width: 2px; background: repeating-linear-gradient(-45deg, transparent 0 10px, rgba(123,36,22,.05) 10px 20px); }
+.box.unverified h4::before { content: "Non vérifié · "; color: var(--blood); }
+.box table { width: 100%; border-collapse: collapse; font-size: .84rem; margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+.box td { padding: 3px 0; border-bottom: 1px dotted var(--ink-soft); vertical-align: top; }
+.box td:last-child { text-align: right; padding-left: 8px; }
+.box pre { margin: 6px 0 0; padding: 8px; background: var(--ink); color: var(--paper); font-family: var(--f-type); font-size: .78rem; overflow-x: auto; }
+
+/* ——— Ads & index ——— */
+.ads { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.ad { flex: 1 1 220px; border: 1px solid var(--rule); padding: 6px 10px; font-family: var(--f-label); text-align: center; font-size: .9rem; letter-spacing: .03em; }
+.ad::before { content: "☞ "; }
+.index { margin-top: 16px; border-block: 3px double var(--rule); padding-block: 6px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 18px; }
+.index a { font-family: var(--f-head); text-transform: uppercase; text-decoration: none; font-size: .95rem; letter-spacing: .03em; }
+.index a span { font-family: var(--f-mast); font-size: 1.3rem; margin-left: 4px; }
+.index a:hover { color: var(--blood); }
+
+/* ——— Sources ——— */
+.sources { margin-top: 18px; }
+.sources h4 { margin: 0 0 8px; font-family: var(--f-label); font-weight: 400; letter-spacing: .16em; text-transform: uppercase; font-size: .9rem; text-align: center; }
+.sources ol { margin: 0; padding-left: 2.4em; columns: 2 300px; column-gap: 28px; column-rule: 1px solid var(--rule); font-size: .82rem; line-height: 1.35; }
+.sources li { break-inside: avoid; margin-bottom: 6px; }
+.sources li:target { background: rgba(123,36,22,.12); }
+.sources .pub { font-family: var(--f-label); color: var(--ink-soft); }
+.colophon { margin-top: 14px; text-align: center; font-family: var(--f-type); font-size: .72rem; color: var(--ink-soft); }
+
+/* ——— Responsive ——— */
+@media (max-width: 960px) {
+  .hero { grid-template-columns: 2.2rem minmax(0,1fr); }
+  .hero .side { grid-column: 2; border-left: 0; padding-left: 0; border-top: 1px solid var(--rule); padding-top: 12px; }
+  .story.large .layout { grid-template-columns: minmax(0,1fr); }
+}
+@media (max-width: 720px) {
+  .brief-grid { grid-template-columns: minmax(0, 1fr); }
+  .mast { grid-template-columns: 1fr; }
+  .crest { display: none; }
+  .ears { grid-template-columns: 1fr; }
+  .hero { grid-template-columns: 1fr; }
+  .hero .vkicker { writing-mode: horizontal-tb; transform: none; grid-row: auto; padding: 4px; }
+  .hero .side { grid-column: 1; }
+  .lead { column-count: 1; }
+  .stories { grid-template-columns: 1fr; }
+  .story.large, .story.medium, .story.half { grid-column: 1; border-left: 0 !important; padding-inline: 0; }
+  .boxes { grid-template-columns: 1fr; }
+  .body p { text-align: left; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; }
+  .seq > g:first-child, .seq > g:first-child .verdict, .term-line { opacity: 1; }
+  .ctx-fill { transform: scaleX(.5); }
+  .owl { transform: translate(140px, 0); }
+}
+</style>
+
+<div class="paper"><div class="frame" id="gazette"></div></div>
+
+<script type="application/json" id="episode">__EPISODE_JSON__</script>
+<script>
+(function () {
+  const ep = JSON.parse(document.getElementById('episode').textContent);
+  const srcIndex = {};
+  (ep.sources || []).forEach((s, i) => { srcIndex[s.id] = i + 1; });
+
+  const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+    .replace(/ ([:?!;»])/g, '\u00a0$1').replace(/« /g, '«\u00a0');
+  // Tiny inline markup: `code`, **bold**, [text](https://…), [^sourceId]
+  function md(s) {
+    const codes = [];
+    let out = esc(s).replace(/`([^`]+)`/g, (_, c) => { codes.push(c); return '\u0000' + (codes.length - 1) + '\u0000'; });
+    out = out
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/\[\^([\w-]+)\]/g, (_, id) => srcIndex[id] ? `<sup class="ref"><a href="#src-${id}" title="Source ${srcIndex[id]}">[${srcIndex[id]}]</a></sup>` : '')
+      .replace(/\[([^\]]+)\]\((https:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+    return out.replace(/\u0000(\d+)\u0000/g, (_, i) => `<code>${codes[i]}</code>`);
+  }
+  const paras = arr => (arr || []).map(p => `<p>${md(p)}</p>`).join('');
+  const srcRef = id => id && srcIndex[id] ? ` <span class="src">source <a href="#src-${id}">[${srcIndex[id]}]</a></span>` : '';
+
+  /* ——— Scenes: built-in moving photographs ——— */
+  const SCENES = {
+    choixpeau(m) {
+      const items = m.items || [
+        ['Génère le CSS du bouton', 'FLASH !'],
+        ['Débogue ce crash en 3 étapes', 'PRO !'],
+        ['Convertis ce JSON en YAML', 'FLASH !'],
+        ["Conçois l'architecture du projet", 'PRO !']
+      ];
+      const groups = items.slice(0, 4).map(([q, v]) => `
+        <g><text class="s-text" x="200" y="226" text-anchor="middle" font-size="15">&gt; ${esc(q)}</text>
+        <text class="s-big verdict" x="200" y="272" text-anchor="middle" font-size="34">${esc(v)}</text></g>`).join('');
+      return `<svg viewBox="0 0 400 300" role="img" aria-label="Le Choixpeau trie les demandes entre Pro et Flash">
+        <g class="hat">
+          <path class="s-ink" d="M120 150 Q200 170 280 150 Q300 158 286 166 Q200 186 114 166 Q100 158 120 150Z"/>
+          <path class="s-ink" d="M140 152 Q160 110 176 80 Q186 50 214 28 Q226 22 222 40 Q212 60 230 88 Q244 112 262 152 Q200 164 140 152Z"/>
+          <path class="s-dark" d="M176 96 Q190 90 200 98 Q192 104 176 96Z"/>
+          <path class="s-dark" d="M214 92 Q226 86 236 96 Q224 100 214 92Z"/>
+          <path class="s-dark brim-mouth" d="M178 128 Q205 120 232 128 Q205 138 178 128Z"/>
+          <path class="s-line" d="M160 140 Q200 148 246 138" stroke-width="2" opacity=".5"/>
+        </g>
+        <line class="s-line" x1="60" y1="200" x2="340" y2="200" stroke-width="1" opacity=".5"/>
+        <g class="seq">${groups}</g></svg>`;
+    },
+    eclair() {
+      return `<svg viewBox="0 0 400 300" role="img" aria-label="Un éclair et un chronomètre qui tourne vite">
+        <rect class="s-ink flashbg" x="0" y="0" width="400" height="300"/>
+        <circle class="s-line" cx="120" cy="160" r="70"/>
+        <circle class="s-ink" cx="120" cy="160" r="6"/>
+        <rect class="s-ink" x="112" y="76" width="16" height="12"/>
+        ${Array.from({length: 12}, (_, i) => { const a = i * Math.PI / 6; return `<line class="s-line" stroke-width="2" x1="${(120 + Math.cos(a) * 58).toFixed(1)}" y1="${(160 + Math.sin(a) * 58).toFixed(1)}" x2="${(120 + Math.cos(a) * 66).toFixed(1)}" y2="${(160 + Math.sin(a) * 66).toFixed(1)}"/>`; }).join('')}
+        <line class="s-line hand" x1="120" y1="160" x2="120" y2="104"/>
+        <path class="s-ink bolt" transform="translate(-50 0)" d="M262 30 L222 150 L258 150 L230 270 L318 120 L276 120 L306 30Z"/>
+        <text class="s-big" x="330" y="150" text-anchor="middle" font-size="40">78 %</text>
+        <text class="s-text" x="330" y="174" text-anchor="middle" font-size="12">SWE-bench Verified</text></svg>`;
+    },
+    hibou() {
+      const stars = [[40,40],[90,80],[150,30],[230,60],[300,26],[350,90],[380,40],[20,120],[260,110]].map(([x,y]) => `<circle class="s-ink" cx="${x}" cy="${y}" r="2"/>`).join('');
+      return `<svg viewBox="0 0 400 300" role="img" aria-label="Un hibou porte une lettre vers Antigravity">
+        <g class="stars">${stars}</g>
+        <circle class="s-ink" cx="330" cy="70" r="26" opacity=".85"/><circle class="s-dark" cx="342" cy="62" r="24"/>
+        <path class="s-ink" d="M0 260 L30 260 L30 225 L45 205 L60 225 L60 260 L90 260 L90 238 L120 238 L120 214 L132 196 L144 214 L144 260 L210 260 L210 230 L240 230 L240 200 L254 182 L268 200 L268 260 L320 260 L320 236 L350 236 L350 212 L364 196 L378 212 L378 260 L400 260 L400 300 L0 300Z" opacity=".55"/>
+        <g class="owl">
+          <path class="s-ink wing" d="M30 70 L-10 50 L8 78 Z"/>
+          <path class="s-ink wing" d="M70 70 L110 50 L92 78 Z"/>
+          <ellipse class="s-ink" cx="50" cy="80" rx="24" ry="28"/>
+          <circle class="s-dark" cx="41" cy="70" r="7"/><circle class="s-dark" cx="59" cy="70" r="7"/>
+          <circle class="s-ink" cx="42" cy="70" r="2.5"/><circle class="s-ink" cx="60" cy="70" r="2.5"/>
+          <path class="s-dark" d="M47 78 L53 78 L50 84Z"/>
+          <path class="s-ink" d="M34 54 L38 44 L44 54Z M56 54 L62 44 L66 54Z"/>
+          <rect class="s-ink" x="34" y="110" width="34" height="22" stroke="#3a2e20" stroke-width="2"/>
+          <path d="M34 110 L51 124 L68 110" fill="none" stroke="#3a2e20" stroke-width="2"/>
+          <text x="51" y="146" text-anchor="middle" font-size="12" class="s-text">agy</text>
+        </g></svg>`;
+    },
+    contexte(m) {
+      const ticks = [0, .25, .5, .75, 1].map(f => `<line class="s-line" stroke-width="1" opacity=".5" x1="${30 + f * 340}" y1="176" x2="${30 + f * 340}" y2="184"/><text class="s-text" x="${30 + f * 340}" y="198" text-anchor="middle" font-size="12">${Math.round(f * 100)} %</text>`).join('');
+      return `<svg viewBox="0 0 400 300" role="img" aria-label="La fenêtre de contexte se remplit au fil de la discussion puis est compressée">
+        <text class="s-big" x="200" y="52" text-anchor="middle" font-size="22">FENÊTRE DE CONTEXTE</text>
+        <rect class="s-line" x="30" y="120" width="340" height="50" stroke-width="2"/>
+        <rect class="s-ink ctx-fill" x="30" y="120" width="340" height="50"/>
+        <rect class="s-dark ctx-sum" x="30" y="120" width="44" height="50"/>
+        <text class="s-text ctx-sumlbl" x="52" y="150" text-anchor="middle" font-size="11" fill="#cdb88b">résumé</text>
+        <line class="s-line" stroke-dasharray="5 4" stroke-width="2" x1="200" y1="104" x2="200" y2="170"/>
+        <text class="s-text" x="200" y="96" text-anchor="middle" font-size="13">seuil de compression (50 %)</text>
+        ${ticks}
+        <text class="s-big ctx-flash" x="200" y="246" text-anchor="middle" font-size="26">/compress</text>
+        <text class="s-text ctx-time" x="200" y="272" text-anchor="middle" font-size="13">le temps de la discussion  →</text>
+      </svg>`;
+    },
+    terminal(m) {
+      const lines = m.lines || [];
+      const dur = Math.max(6, lines.length * 1.4 + 3);
+      const t = lines.map((l, i) => `<text class="s-text term-line" style="--d:${(i * 1.2).toFixed(1)}s;--dur:${dur}s" x="28" y="${92 + i * 38}" font-size="17" xml:space="preserve">${esc(l)}</text>`).join('');
+      return `<svg viewBox="0 0 400 300" role="img" aria-label="Terminal animé"><rect class="s-dark" x="10" y="10" width="380" height="280" rx="6"/>
+        <circle class="s-ink" cx="30" cy="32" r="5"/><circle class="s-ink" cx="48" cy="32" r="5" opacity=".6"/><circle class="s-ink" cx="66" cy="32" r="5" opacity=".3"/>
+        <line class="s-line" x1="10" y1="52" x2="390" y2="52" stroke-width="1" opacity=".5"/>${t}
+        <rect class="s-ink cursor" x="28" y="268" width="10" height="4"/></svg>`;
+    }
+  };
+
+  function media(m) {
+    if (!m) return '';
+    let inner = '';
+    if (m.type === 'scene' && SCENES[m.name]) inner = SCENES[m.name](m);
+    else if (m.type === 'video') inner = `<video src="${esc(m.src)}" ${m.poster ? `poster="${esc(m.poster)}"` : ''} autoplay muted loop playsinline aria-label="${esc(m.alt || m.caption || '')}"></video>`;
+    else if (m.type === 'image') inner = `<img src="${esc(m.src)}" alt="${esc(m.alt || m.caption || '')}">`;
+    else return '';
+    return `<figure class="photo"><div class="plate">${inner}</div>${m.caption ? `<figcaption>${md(m.caption)}</figcaption>` : ''}</figure>`;
+  }
+
+  const crest = `<svg class="crest" viewBox="0 0 80 80" aria-hidden="true"><path d="M40 4 L70 14 L70 40 Q70 64 40 76 Q10 64 10 40 L10 14Z" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M40 10 L64 18 L64 40 Q64 59 40 70 Q16 59 16 40 L16 18Z" fill="none" stroke="currentColor" stroke-width="1"/><text x="40" y="50" text-anchor="middle" font-family="UnifrakturMaguntia, serif" font-size="30" fill="currentColor">GC</text></svg>`;
+
+  const pad2 = n => String(n).padStart(2, '0');
+  const titleParts = (ep.series || '').split(/\s+(?=à\s)/i);
+  const h = ep.headline || {};
+  const side = ep.sideStory;
+  const top = ep.topStrip || [];
+
+  const ear = b => b ? `<div class="ear"><h3>${esc(b.title)}</h3><ul>${(b.lines || []).map(l => `<li>${md(l)}</li>`).join('')}</ul>${srcRef(b.source)}</div>` : '<div></div>';
+
+  // Lay stories into rows of 6 grid units so the left rule is dropped on each row's first story.
+  let used = 0;
+  const stories = (ep.articles || []).map(a => {
+    const span = a.size === 'large' ? 4 : a.size === 'half' ? 3 : 2;
+    const first = used % 6 === 0 || used % 6 + span > 6;
+    if (first && used % 6 !== 0) used += 6 - used % 6;
+    used += span;
+    const code = a.code ? `<div class="codebox"><div class="lbl">${esc(a.code.label || '')}${srcRef(a.code.source)}</div><pre>${esc(a.code.text)}</pre></div>` : '';
+    const text = `<div class="body">${paras(a.body)}</div>${code}`;
+    const inner = a.size === 'large' && a.media ? `<div class="layout"><div>${media(a.media)}</div><div>${text}</div></div>` : `${media(a.media)}${text}`;
+    return `<article class="story ${a.size === 'large' ? 'large' : a.size === 'half' ? 'half' : 'medium'}${first ? ' first-in-row' : ''}" id="${esc(a.id)}">
+      <div class="kicker">${esc(a.kicker || '')}</div><h3>${esc(a.title)}</h3>${inner}</article>`;
+  }).join('');
+
+  const boxes = (ep.boxes || []).map(b => `<aside class="box${b.kind === 'unverified' ? ' unverified' : ''}" id="${esc(b.id || '')}">
+    <h4>${esc(b.title)}</h4>
+    ${b.table ? `<table>${b.table.map(r => `<tr><td>${md(r[0])}</td><td>${md(r[1])}</td></tr>`).join('')}</table>` : ''}
+    ${paras(b.body)}${b.code ? `<pre>${esc(b.code)}</pre>` : ''}</aside>`).join('');
+
+  const html = `
+    <header class="mast">
+      ${crest}
+      <div class="mast-title"><h1>${esc(titleParts[0] || ep.series)}</h1>${titleParts[1] ? `<div class="school">${esc(titleParts[1])}</div>` : ''}</div>
+      ${crest}
+    </header>
+    <div class="tagline">${esc(ep.tagline || '')}</div>
+    <div class="ears">
+      ${ear(top[0])}
+      <div class="edition"><div class="se">S${pad2(ep.season)}EP${pad2(ep.episode)}</div><div class="etitle">${esc(ep.theme || '')}</div><div class="date">${esc(ep.dateLabel || ep.date)}</div></div>
+      ${ear(top[1])}
+    </div>
+    ${ep.brief ? `<section class="brief" id="bref"><h2>${esc(ep.brief.title || 'En bref')}</h2><div class="brief-grid">${ep.brief.items.map(i => `<a class="brief-item" href="#${esc(i.anchor || '')}"><strong>${esc(i.label)}</strong><span>${md(i.text)}</span></a>`).join('')}</div></section>` : ''}
+    <section class="headline" id="une"><h2>${esc(h.title || '')}</h2>${h.deck ? `<p class="deck">${esc(h.deck)}</p>` : ''}</section>
+    <section class="hero">
+      <div class="vkicker">${esc(h.kicker || 'À la une')}</div>
+      <div class="col photo-col">${media(h.media)}<div class="body lead">${paras(h.body)}${h.byline ? `<div class="byline">${esc(h.byline)}</div>` : ''}</div></div>
+      ${side ? `<div class="col side" id="plan"><div class="kicker">${esc(side.kicker || '')}</div><h3>${esc(side.title)}</h3><div class="body${side.dropcap ? ' dropcap' : ''}">${paras(side.body)}</div></div>` : ''}
+    </section>
+    <section class="stories">${stories}</section>
+    ${boxes ? `<section class="boxes">${boxes}</section>` : ''}
+    ${(ep.ads || []).length ? `<section class="ads">${ep.ads.map(a => `<div class="ad">${md(a)}</div>`).join('')}</section>` : ''}
+    ${(ep.index || []).length ? `<nav class="index" aria-label="Sommaire">${ep.index.map((x, i) => `<a href="#${esc(x.anchor)}">${esc(x.label)}<span>${i + 1}</span></a>`).join('')}</nav>` : ''}
+    <section class="sources" id="sources"><h4>Sources citées</h4><ol>${(ep.sources || []).map(s => `<li id="src-${esc(s.id)}"><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a> · <span class="pub">${esc(s.publisher || '')}</span></li>`).join('')}</ol></section>
+    <p class="colophon">${esc(ep.series)} · S${pad2(ep.season)}EP${pad2(ep.episode)} · généré le ${esc(ep.date)} à partir des sources ci-dessus.</p>`;
+
+  document.getElementById('gazette').innerHTML = html;
+})();
+</script>

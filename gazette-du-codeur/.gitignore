@@ -1,0 +1,3 @@
+dist/*
+!dist/News-IA/
+*.zip

@@ -1,0 +1,12 @@
+*La Gazette du Codeur · S01EP01*
+_Mieux piloter Gemini CLI : contexte, sous-agents, mémoire et skills_
+
+*En bref*
+• *Compression* : Elle démarre à 50 % de la fenêtre. `/compress` la lance à la main.
+• *Jauge de contexte* : Masquée par défaut : `ui.footer.hideContextPercentage` à `false`.
+• *Sous-agents* : À utiliser pour les tâches qui produisent beaucoup de texte : `@nom`.
+• *Retour en arrière* : `/resume save` pour un point de retour, `/rewind` pour annuler.
+• *Mémoire* : Des fichiers Markdown et de la recherche. Auto Memory arrive (expérimental).
+• *Skills* : En installer peu, bien choisis : superpowers, context7…
+
+Le numéro complet : [lien de la page]
