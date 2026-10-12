@@ -1,16 +1,20 @@
 {
   "numero": 1,
+  "statut": "publie",
   "date": "2026-10-12",
-  "periode": { "du": "2026-10-05", "au": "2026-10-11" },
+  "periode": {
+    "du": "2026-10-05",
+    "au": "2026-10-11"
+  },
   "resume": "OpenAI dépose 722 manuscrits de mathématiques écrits par une IA, GPT-6 arrive dans ChatGPT, Haiku 5.5 casse les prix des petits modèles et Mistral annonce un modèle d'un billion de paramètres aux poids ouverts.",
   "une": {
     "id": "une",
     "titreCourt": "722 manuscrits de maths",
     "titre": "OpenAI publie 722 manuscrits de mathématiques écrits par une IA",
-    "chapo": "Un modèle interne, toujours pas publié, revendique la conjecture des jeux uniques et L\u00a0=\u00a0BPL. Les mathématiciens commencent à peine à lire.",
+    "chapo": "Un modèle interne, toujours pas publié, revendique la conjecture des jeux uniques et L = BPL. Les mathématiciens commencent à peine à lire.",
     "corps": [
       "Le 6 octobre au soir, OpenAI a versé sur GitHub un catalogue de résultats produits par un « modèle interne de pointe » qu'elle ne publie pas[^oai-math]. Le catalogue compte 372 familles de résultats et 722 manuscrits, ramenés à 719 le lendemain après le retrait de trois textes pour une erreur de signe ; 14 autres ont été révisés[^implicator-math]. Le modèle a reçu environ 4 000 problèmes, et chaque résultat a coûté en moyenne l'équivalent de trois heures de réflexion ChatGPT Pro[^oai-math][^implicator-math].",
-      "Dans la liste : une preuve de la conjecture des jeux uniques de Subhash Khot, L\u00a0=\u00a0BPL et une multiplication d'entiers plus rapide[^implicator-math]. Scott Aaronson parle de ce qui pourrait être « l'un des plus grands jours de l'histoire des mathématiques », tout en notant que presque aucune de ces preuves n'a encore été comprise par un humain[^aaronson]. Dana Moshkovitz, qui a travaillé des années sur les jeux uniques, juge le manuscrit impossible à lire sans l'aide d'une IA[^implicator-math].",
+      "Dans la liste : une preuve de la conjecture des jeux uniques de Subhash Khot, L = BPL et une multiplication d'entiers plus rapide[^implicator-math]. Scott Aaronson parle de ce qui pourrait être « l'un des plus grands jours de l'histoire des mathématiques », tout en notant que presque aucune de ces preuves n'a encore été comprise par un humain[^aaronson]. Dana Moshkovitz, qui a travaillé des années sur les jeux uniques, juge le manuscrit impossible à lire sans l'aide d'une IA[^implicator-math].",
       "Le contrôle reste partiel. Au 7 octobre, 300 des 719 résultats avaient une preuve vérifiée par Lean, et OpenAI prévient que les autres « pourraient avoir des problèmes »[^implicator-math]. L'entreprise a publié des moyennes de calcul et 10 résumés de raisonnement, mais ni les prompts ni le modèle[^implicator-math]. « Il faut demander des reçus », résume Andrew Sutherland (MIT)[^implicator-math]."
     ],
     "figure": {
@@ -148,23 +152,128 @@
     ]
   },
   "sources": [
-    { "id": "oai-math", "titre": "Sharing AI progress in mathematics", "editeur": "OpenAI", "url": "https://openai.com/index/sharing-ai-progress-in-mathematics/", "date": "2026-10-06" },
-    { "id": "implicator-math", "titre": "OpenAI's 372 math results: mathematicians race to read", "editeur": "Implicator", "url": "https://www.implicator.ai/openai-372-math-results-mathematicians-race-to-read/" },
-    { "id": "aaronson", "titre": "The Mathocalypse", "editeur": "Scott Aaronson, Shtetl-Optimized", "url": "https://scottaaronson.blog/?p=10169", "date": "2026-10-07" },
-    { "id": "oai-gpt6", "titre": "GPT-6 Sol and GPT-6 Luna: October 2026 update", "editeur": "OpenAI Deployment Safety Hub", "url": "https://deploymentsafety.openai.com/gpt-6-october", "date": "2026-10-07" },
-    { "id": "tc-gpt6", "titre": "ChatGPT is getting a lot more visual with the launch of a new interface", "editeur": "TechCrunch", "url": "https://techcrunch.com/2026/10/07/chatgpt-is-getting-a-lot-more-visual-with-the-launch-of-a-new-interface/", "date": "2026-10-07" },
-    { "id": "da-gpt6", "titre": "GPT-6 Sol and Luna: API prices, benchmarks and trade-offs", "editeur": "Digital Applied", "url": "https://www.digitalapplied.com/blog/gpt-6-sol-luna-launch-pricing-benchmarks-2026" },
-    { "id": "ant-haiku", "titre": "Introducing Claude Haiku 5.5", "editeur": "Anthropic", "url": "https://www.anthropic.com/claude-haiku-5-5", "date": "2026-10-07" },
-    { "id": "oc-mistral", "titre": "Mistral releases Mistral Large 4 (Le Chonk), says it's the top open model from the West", "editeur": "OfficeChai", "url": "https://officechai.com/ai/mistral-large-4-le-chonk/", "date": "2026-10-06" },
-    { "id": "reflection-beam", "titre": "Beam: Reflection's 501B open-weight model", "editeur": "Reflection", "url": "https://reflection.ai/blog/introducing-beam", "date": "2026-10-05" },
-    { "id": "tnw-pap", "titre": "Sierra announces Personal Agent Protocol, an open standard for personal AI agents", "editeur": "The Next Web", "url": "https://thenextweb.com/news/personal-agent-protocol-sierra-meta", "date": "2026-10-06" },
-    { "id": "wmf", "titre": "OpenAI \"rogue\" agent activities found on Wikimedia projects", "editeur": "Wikimedia Foundation", "url": "https://diff.wikimedia.org/2026/10/05/openai-rogue-agent-activities-found-on-wikimedia-projects/", "date": "2026-10-05" },
-    { "id": "dr-wmf", "titre": "OpenAI agent escape causes Wikimedia service outage", "editeur": "Dark Reading", "url": "https://www.darkreading.com/cyberattacks-data-breaches/openai-agent-escape-causes-wikimedia-service-outage", "date": "2026-10-07" },
-    { "id": "tc-textgrain", "titre": "OpenAI will start watermarking ChatGPT's text in the EU", "editeur": "TechCrunch", "url": "https://techcrunch.com/2026/10/05/openai-will-start-watermarking-chatgpts-text-in-the-eu/", "date": "2026-10-05" },
-    { "id": "aiw-nanobanana", "titre": "Google's Nano Banana 2.1 halves image prices on Gemini 3.6 Flash", "editeur": "AI Weekly, d'après The Decoder", "url": "https://aiweekly.co/alerts/googles-nano-banana-21-halves-image-prices-on-gemini-36-flash", "date": "2026-10-07" },
-    { "id": "aiw-embeddinggemma", "titre": "Google ships EmbeddingGemma 2 for on-device multimodal retrieval", "editeur": "AI Weekly", "url": "https://aiweekly.co/alerts/google-ships-embeddinggemma-2-for-on-device-multimodal-retrieval", "date": "2026-10-06" },
-    { "id": "aiw-tsc", "titre": "Ping Labs' Claude-built Rust port of tsc passes 181,711 tests", "editeur": "AI Weekly", "url": "https://aiweekly.co/alerts/ping-labs-claude-built-rust-port-of-tsc-passes-181711-tests", "date": "2026-10-08" },
-    { "id": "zeli-tsc", "titre": "Opus 5.5 ports the TypeScript compiler to Rust in 10 hours for $24,000", "editeur": "Zeli, résumé du fil Hacker News", "url": "https://zeli.app/story/50000676" },
-    { "id": "aiw-crunchbase", "titre": "Crunchbase: AI startups have acquired 195 AI companies in 2026", "editeur": "AI Weekly, d'après Crunchbase", "url": "https://aiweekly.co/ai-news-today/edition/2026-10-07", "date": "2026-10-07" }
+    {
+      "id": "oai-math",
+      "titre": "Sharing AI progress in mathematics",
+      "editeur": "OpenAI",
+      "url": "https://openai.com/index/sharing-ai-progress-in-mathematics/",
+      "date": "2026-10-06"
+    },
+    {
+      "id": "implicator-math",
+      "titre": "OpenAI's 372 math results: mathematicians race to read",
+      "editeur": "Implicator",
+      "url": "https://www.implicator.ai/openai-372-math-results-mathematicians-race-to-read/"
+    },
+    {
+      "id": "aaronson",
+      "titre": "The Mathocalypse",
+      "editeur": "Scott Aaronson, Shtetl-Optimized",
+      "url": "https://scottaaronson.blog/?p=10169",
+      "date": "2026-10-07"
+    },
+    {
+      "id": "oai-gpt6",
+      "titre": "GPT-6 Sol and GPT-6 Luna: October 2026 update",
+      "editeur": "OpenAI Deployment Safety Hub",
+      "url": "https://deploymentsafety.openai.com/gpt-6-october",
+      "date": "2026-10-07"
+    },
+    {
+      "id": "tc-gpt6",
+      "titre": "ChatGPT is getting a lot more visual with the launch of a new interface",
+      "editeur": "TechCrunch",
+      "url": "https://techcrunch.com/2026/10/07/chatgpt-is-getting-a-lot-more-visual-with-the-launch-of-a-new-interface/",
+      "date": "2026-10-07"
+    },
+    {
+      "id": "da-gpt6",
+      "titre": "GPT-6 Sol and Luna: API prices, benchmarks and trade-offs",
+      "editeur": "Digital Applied",
+      "url": "https://www.digitalapplied.com/blog/gpt-6-sol-luna-launch-pricing-benchmarks-2026"
+    },
+    {
+      "id": "ant-haiku",
+      "titre": "Introducing Claude Haiku 5.5",
+      "editeur": "Anthropic",
+      "url": "https://www.anthropic.com/claude-haiku-5-5",
+      "date": "2026-10-07"
+    },
+    {
+      "id": "oc-mistral",
+      "titre": "Mistral releases Mistral Large 4 (Le Chonk), says it's the top open model from the West",
+      "editeur": "OfficeChai",
+      "url": "https://officechai.com/ai/mistral-large-4-le-chonk/",
+      "date": "2026-10-06"
+    },
+    {
+      "id": "reflection-beam",
+      "titre": "Beam: Reflection's 501B open-weight model",
+      "editeur": "Reflection",
+      "url": "https://reflection.ai/blog/introducing-beam",
+      "date": "2026-10-05"
+    },
+    {
+      "id": "tnw-pap",
+      "titre": "Sierra announces Personal Agent Protocol, an open standard for personal AI agents",
+      "editeur": "The Next Web",
+      "url": "https://thenextweb.com/news/personal-agent-protocol-sierra-meta",
+      "date": "2026-10-06"
+    },
+    {
+      "id": "wmf",
+      "titre": "OpenAI \"rogue\" agent activities found on Wikimedia projects",
+      "editeur": "Wikimedia Foundation",
+      "url": "https://diff.wikimedia.org/2026/10/05/openai-rogue-agent-activities-found-on-wikimedia-projects/",
+      "date": "2026-10-05"
+    },
+    {
+      "id": "dr-wmf",
+      "titre": "OpenAI agent escape causes Wikimedia service outage",
+      "editeur": "Dark Reading",
+      "url": "https://www.darkreading.com/cyberattacks-data-breaches/openai-agent-escape-causes-wikimedia-service-outage",
+      "date": "2026-10-07"
+    },
+    {
+      "id": "tc-textgrain",
+      "titre": "OpenAI will start watermarking ChatGPT's text in the EU",
+      "editeur": "TechCrunch",
+      "url": "https://techcrunch.com/2026/10/05/openai-will-start-watermarking-chatgpts-text-in-the-eu/",
+      "date": "2026-10-05"
+    },
+    {
+      "id": "aiw-nanobanana",
+      "titre": "Google's Nano Banana 2.1 halves image prices on Gemini 3.6 Flash",
+      "editeur": "AI Weekly, d'après The Decoder",
+      "url": "https://aiweekly.co/alerts/googles-nano-banana-21-halves-image-prices-on-gemini-36-flash",
+      "date": "2026-10-07"
+    },
+    {
+      "id": "aiw-embeddinggemma",
+      "titre": "Google ships EmbeddingGemma 2 for on-device multimodal retrieval",
+      "editeur": "AI Weekly",
+      "url": "https://aiweekly.co/alerts/google-ships-embeddinggemma-2-for-on-device-multimodal-retrieval",
+      "date": "2026-10-06"
+    },
+    {
+      "id": "aiw-tsc",
+      "titre": "Ping Labs' Claude-built Rust port of tsc passes 181,711 tests",
+      "editeur": "AI Weekly",
+      "url": "https://aiweekly.co/alerts/ping-labs-claude-built-rust-port-of-tsc-passes-181711-tests",
+      "date": "2026-10-08"
+    },
+    {
+      "id": "zeli-tsc",
+      "titre": "Opus 5.5 ports the TypeScript compiler to Rust in 10 hours for $24,000",
+      "editeur": "Zeli, résumé du fil Hacker News",
+      "url": "https://zeli.app/story/50000676"
+    },
+    {
+      "id": "aiw-crunchbase",
+      "titre": "Crunchbase: AI startups have acquired 195 AI companies in 2026",
+      "editeur": "AI Weekly, d'après Crunchbase",
+      "url": "https://aiweekly.co/ai-news-today/edition/2026-10-07",
+      "date": "2026-10-07"
+    }
   ]
 }

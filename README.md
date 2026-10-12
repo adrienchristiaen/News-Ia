@@ -40,7 +40,7 @@ cd ../web && npm run dev                                    # http://localhost:3
 
 ## Le site hebdo (La Gazette, version journal)
 
-`make gazette` produit et publie le numéro de la semaine du site [hebdo/](hebdo/README.md) : veille (presse, Reddit, Hacker News), choix et vérification des sujets par Claude Code, build statique, push, puis publication sur GitHub Pages.
+`make gazette` prépare le brouillon du numéro de la semaine du site [hebdo/](hebdo/README.md) : veille (presse, Reddit et X par leurs API, Hacker News), choix et vérification des sujets par Claude Code. Tu relis, tu corriges avec `make gazette-corriger M="…"`, puis `make gazette-publier` pousse et GitHub Pages publie.
 
 ## Organisation
 

@@ -4,12 +4,20 @@
     python3 hebdo/veille.py                 ->  hebdo/veille/<lundi>.md (+ .json)
     python3 hebdo/veille.py --date 2026-10-19
 
-Lit les flux RSS/Atom, le top de la semaine de plusieurs subreddits et les fils IA les plus
-votés de Hacker News (sources.json). Rien n'est rédigé ici : le fichier produit est une liste
+Lit les flux RSS/Atom, le top de la semaine de plusieurs subreddits (avec leurs meilleurs
+commentaires), les posts X des comptes suivis et les fils IA les plus votés de Hacker News
+(sources.json).
+
+Accès officiels, à mettre dans l'environnement ou dans hebdo/.env (jamais commité) :
+  REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET   app « script » créée sur https://www.reddit.com/prefs/apps
+  X_BEARER_TOKEN                           app créée sur https://console.x.com (crédits payants à l'usage)
+Sans clé Reddit, la veille tente l'accès public ; sans clé X, elle saute X et le signale. Rien n'est rédigé ici : le fichier produit est une liste
 de pistes classées, que le skill gazette-ia vérifie à la source avant d'écrire quoi que ce soit.
 Bibliothèque standard uniquement. Une source injoignable est signalée puis ignorée.
 """
 import argparse
+import base64
+import os
 import email.utils
 import json
 import re
@@ -26,10 +34,36 @@ UA = "GazetteAlgorithme/1.0 (veille hebdomadaire; +https://github.com/adrienchri
 ATOM = "{http://www.w3.org/2005/Atom}"
 
 
-def get(url, timeout=20):
-    req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "*/*"})
+def get(url, timeout=20, headers=None, data=None):
+    req = urllib.request.Request(url, data=data, headers={"User-Agent": UA, "Accept": "*/*", **(headers or {})})
     with urllib.request.urlopen(req, timeout=timeout) as r:
         return r.read()
+
+
+def charger_env():
+    f = ROOT / ".env"
+    if f.exists():
+        for ligne in f.read_text(encoding="utf-8").splitlines():
+            if "=" in ligne and not ligne.lstrip().startswith("#"):
+                k, v = ligne.split("=", 1)
+                os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
+
+
+_REDDIT = {}
+
+
+def reddit_api(chemin):
+    """Appel Reddit : API OAuth officielle si des identifiants existent, sinon accès public."""
+    cid, sec = os.environ.get("REDDIT_CLIENT_ID"), os.environ.get("REDDIT_CLIENT_SECRET")
+    if cid and sec:
+        if "token" not in _REDDIT:
+            auth = base64.b64encode(f"{cid}:{sec}".encode()).decode()
+            tok = json.loads(get("https://www.reddit.com/api/v1/access_token", headers={"Authorization": f"Basic {auth}"},
+                                 data=b"grant_type=client_credentials"))
+            _REDDIT["token"] = tok["access_token"]
+        return json.loads(get("https://oauth.reddit.com" + chemin, headers={"Authorization": f"Bearer {_REDDIT['token']}"}))
+    base, _, q = chemin.partition("?")
+    return json.loads(get(f"https://www.reddit.com{base}.json?{q}"))
 
 
 def parse_date(s):
@@ -75,7 +109,7 @@ def flux(src, depuis):
 
 
 def reddit(sub, depuis):
-    data = json.loads(get(f"https://www.reddit.com/r/{sub}/top.json?t=week&limit=15"))
+    data = reddit_api(f"/r/{sub}/top?t=week&limit=15&raw_json=1")
     out = []
     for c in data["data"]["children"]:
         p = c["data"]
@@ -85,7 +119,56 @@ def reddit(sub, depuis):
         out.append({"source": f"r/{sub}", "type": "reddit", "titre": p["title"],
                     "url": "https://www.reddit.com" + p["permalink"], "lien_externe": p.get("url_overridden_by_dest", ""),
                     "date": quand.date().isoformat(), "points": p["score"], "commentaires": p["num_comments"],
-                    "resume": (p.get("selftext") or "")[:280], "poids": 1})
+                    "resume": (p.get("selftext") or "")[:600], "poids": 1, "_permalink": p["permalink"]})
+    return out
+
+
+def reddit_commentaires(c, n=3):
+    """Ajoute le texte des meilleurs commentaires : ce que la communauté en dit vraiment."""
+    data = reddit_api(c["_permalink"].rstrip("/") + "?sort=top&limit=8&depth=1&raw_json=1")
+    coms = [x["data"] for x in data[1]["data"]["children"] if x["kind"] == "t1" and not x["data"].get("stickied")]
+    c["commentaires_top"] = [{"auteur": x.get("author"), "score": x.get("score"), "texte": x.get("body", "")[:500]} for x in coms[:n]]
+
+
+def x_posts(cfg, depuis):
+    """Posts récents des comptes suivis, via l'API officielle X v2 (recherche des 7 derniers jours)."""
+    token = os.environ.get("X_BEARER_TOKEN")
+    if not token:
+        raise RuntimeError("X_BEARER_TOKEN absent : X ignoré (voir hebdo/README.md)")
+    comptes, out, lus = cfg["comptes"], [], 0
+    # Une requête par paquet de comptes (longueur de requête limitée), plafonnée par le budget.
+    paquets, cur = [], []
+    for c in comptes:
+        if len(" OR ".join(f"from:{x}" for x in cur + [c])) > 400:
+            paquets.append(cur)
+            cur = []
+        cur.append(c)
+    if cur:
+        paquets.append(cur)
+    for paquet in paquets:
+        if lus >= cfg.get("maxPosts", 300):
+            break
+        q = "(" + " OR ".join(f"from:{x}" for x in paquet) + ") -is:retweet -is:reply"
+        params = urllib.parse.urlencode({
+            "query": q, "max_results": min(100, cfg.get("maxPosts", 300) - lus),
+            "start_time": depuis.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "tweet.fields": "created_at,public_metrics,author_id,note_tweet,entities",
+            "expansions": "author_id", "user.fields": "username,name"})
+        data = json.loads(get(f"https://api.x.com/2/tweets/search/recent?{params}", headers={"Authorization": f"Bearer {token}"}))
+        users = {u["id"]: u for u in data.get("includes", {}).get("users", [])}
+        for t in data.get("data", []):
+            lus += 1
+            m = t.get("public_metrics", {})
+            u = users.get(t["author_id"], {})
+            texte = (t.get("note_tweet") or {}).get("text") or t["text"]
+            engagement = m.get("like_count", 0) + 3 * m.get("retweet_count", 0) + 2 * m.get("quote_count", 0)
+            if engagement < cfg.get("engagementMin", 200):
+                continue
+            liens = [x.get("expanded_url") for x in t.get("entities", {}).get("urls", []) if x.get("expanded_url")]
+            out.append({"source": f"X @{u.get('username', '?')}", "type": "x", "titre": texte.split("\n")[0][:140],
+                        "texte": texte, "url": f"https://x.com/{u.get('username', 'i')}/status/{t['id']}",
+                        "lien_externe": liens[0] if liens else "", "date": t["created_at"][:10],
+                        "points": m.get("like_count", 0), "commentaires": m.get("reply_count", 0), "poids": 2})
     return out
 
 
@@ -140,6 +223,7 @@ def main():
     args = ap.parse_args()
     today = date.today()
     lundi = date.fromisoformat(args.date) if args.date else today + timedelta(days=(7 - today.weekday()) % 7)
+    charger_env()
     cfg = json.loads((ROOT / "sources.json").read_text(encoding="utf-8"))
     fin = datetime.combine(lundi, datetime.min.time(), timezone.utc)
     depuis = fin - timedelta(days=cfg.get("jours", 8))
@@ -147,6 +231,8 @@ def main():
     taches = [("flux " + f["nom"], flux, f) for f in cfg["flux"]]
     taches += [("reddit r/" + s, reddit, s) for s in cfg["reddit"]]
     taches.append(("Hacker News", hackernews, cfg["hackernews"]))
+    if cfg.get("x"):
+        taches.append(("X", x_posts, cfg["x"]))
     cands, echecs = [], []
     with ThreadPoolExecutor(max_workers=8) as ex:
         futs = {ex.submit(fn, arg, depuis): nom for nom, fn, arg in taches}
@@ -156,6 +242,16 @@ def main():
             except Exception as x:  # une source en panne ne bloque pas la veille
                 echecs.append(f"{nom} : {type(x).__name__} {str(x)[:120]}")
     cands = [c for c in cands if c["date"] < lundi.isoformat()]
+    # Les meilleurs commentaires des posts Reddit les plus suivis.
+    top_reddit = sorted((c for c in cands if c["type"] == "reddit"), key=lambda c: -c.get("points", 0))[:12]
+    with ThreadPoolExecutor(max_workers=4) as ex:
+        for c, f in [(c, ex.submit(reddit_commentaires, c)) for c in top_reddit]:
+            try:
+                f.result()
+            except Exception as x:
+                echecs.append(f"commentaires {c['url']} : {type(x).__name__}")
+    for c in cands:
+        c.pop("_permalink", None)
     vus, uniques = set(), []
     for c in cands:
         k = (c.get("lien_externe") or c["url"]).split("?")[0].rstrip("/")
@@ -182,6 +278,10 @@ def main():
             extra = f", {c['points']} pts, {c['commentaires']} comm." if c.get("points") else ""
             ext = f" (lien : {c['lien_externe']})" if c.get("lien_externe") else ""
             lignes.append(f"- [{c['source']}{extra}, {c['date']}] {c['titre']} : {c['url']}{ext}")
+            if c.get("type") == "x":
+                lignes.append("  > " + c["texte"].replace("\n", "\n  > "))
+            for com in c.get("commentaires_top", []):
+                lignes.append(f"  - commentaire de u/{com['auteur']} ({com['score']} pts) : {com['texte'][:300].replace(chr(10), ' ')}")
         lignes.append("")
     (sortie / f"{lundi}.md").write_text("\n".join(lignes), encoding="utf-8")
     print(f"hebdo/veille/{lundi}.md : {len(uniques)} candidats, {len(groupes)} sujets, {len(echecs)} source(s) en échec.")

@@ -17,3 +17,5 @@ web/next-env.d.ts
 web/*.tsbuildinfo
 hebdo/_site/
 hebdo/veille/
+hebdo/_brouillon/
+hebdo/.env

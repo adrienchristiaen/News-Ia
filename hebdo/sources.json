@@ -1,5 +1,5 @@
 {
-  "_comment": "Sources de la veille hebdo. Poids 1 à 3 = confiance. Un flux qui échoue est ignoré avec un avertissement. X n'a pas d'accès libre : ses débats sont repérés via la presse, Hacker News et Reddit.",
+  "_comment": "Sources de la veille hebdo. Poids 1 à 3 = confiance. Un flux qui échoue est ignoré avec un avertissement. Reddit passe par l'API officielle si REDDIT_CLIENT_ID/SECRET existent ; X par l'API v2 si X_BEARER_TOKEN existe (payant à l'usage, plafonné par x.maxPosts).",
   "jours": 8,
   "flux": [
     { "nom": "OpenAI", "url": "https://openai.com/news/rss.xml", "poids": 3 },
@@ -18,6 +18,12 @@
     { "nom": "Le Monde Pixels", "url": "https://www.lemonde.fr/pixels/rss_full.xml", "poids": 1 }
   ],
   "reddit": ["LocalLLaMA", "MachineLearning", "singularity", "OpenAI", "ClaudeAI", "artificial", "StableDiffusion"],
+  "x": {
+    "comptes": ["OpenAI", "AnthropicAI", "GoogleDeepMind", "MistralAI", "AIatMeta", "xai", "deepseek_ai", "Alibaba_Qwen", "huggingface",
+                "sama", "karpathy", "simonw", "_akhaliq", "ylecun", "demishassabis", "DarioAmodei", "natolambert", "emollick", "swyx", "rasbt"],
+    "maxPosts": 300,
+    "engagementMin": 200
+  },
   "hackernews": { "requete": "AI OR LLM OR GPT OR Claude OR Gemini OR OpenAI OR Anthropic OR Mistral OR agent", "points_min": 150 },
   "motsCles": {
     "bonus": ["launch", "release", "lance", "open source", "open-weight", "benchmark", "agent", "model", "modèle", "regulation", "AI Act", "lawsuit", "procès", "safety", "sécurité", "funding", "levée", "price", "prix"],

@@ -3,6 +3,7 @@
 
     python3 hebdo/build.py            ->  hebdo/_site/ (site statique complet)
     python3 hebdo/build.py --check    ->  valide les numéros sans rien écrire
+    python3 hebdo/build.py --brouillon -> hebdo/_brouillon/ : aperçu local qui inclut les brouillons
 
 Un numéro = un fichier hebdo/numeros/AAAA-MM-JJ.json (date de parution, un lundi).
 Le plus récent fait la une de index.html ; tous sont dans /numero/<date>/ et /archives/.
@@ -111,7 +112,11 @@ def valider(n, path):
         err.append("la date de parution doit être un lundi")
     if path.stem != n["date"]:
         err.append(f"le fichier doit s'appeler {n['date']}.json")
-    blob = json.dumps(n, ensure_ascii=False)
+    if n.get("statut", "publie") not in ("brouillon", "publie"):
+        err.append("statut doit valoir « brouillon » ou « publie »")
+    if not all(isinstance(x, str) for x in n.get("relecture", [])):
+        err.append("relecture doit être une liste de phrases")
+    blob = json.dumps({k: v for k, v in n.items() if k != "relecture"}, ensure_ascii=False)
     if "—" in blob or "–" in blob:
         err.append("tirets cadratin ou demi-cadratin interdits : utiliser une virgule, deux-points ou un trait d'union")
     ids = [s["id"] for s in n["sources"]]
@@ -273,7 +278,17 @@ def numero_html(n, base, est_une):
 </section>"""
 
     lien = "" if not est_une else f'<a href="{base}numero/{n["date"]}/">Lien permanent</a>'
+    relecture = ""
+    if n.get("statut") == "brouillon":
+        points = "".join(f"<li>{md(x, Ctx([]))}</li>" for x in n.get("relecture", [])) or "<li>Aucun point signalé par la rédaction.</li>"
+        relecture = f"""<aside class="relecture" aria-labelledby="relecture-t">
+  <h2 id="relecture-t">Brouillon à relire</h2>
+  <p>Ce numéro n'est pas publié. Points que la rédaction n'a pas pu confirmer ou qu'elle te demande de trancher :</p>
+  <ul>{points}</ul>
+  <p class="relecture-cmd">Corriger : <code>make gazette-corriger M="…"</code>. Publier tel quel : <code>make gazette-publier</code>.</p>
+</aside>"""
     return f"""<main id="contenu" class="journal">
+{relecture}
 <nav class="sommaire" aria-label="Dans ce numéro"><p>Dans ce numéro</p><ol>{som}</ol></nav>
 {une}
 <div class="papiers">{arts}</div>
@@ -387,12 +402,17 @@ def rss(numeros):
 """
 
 
+def cls(n):
+    return "est-brouillon" if n.get("statut") == "brouillon" else ""
+
+
 def ecrire(path, texte):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(texte, encoding="utf-8")
 
 
 def main():
+    global OUT
     numeros, erreurs = charger()
     if erreurs:
         print("Numéros invalides :\n  " + "\n  ".join(erreurs), file=sys.stderr)
@@ -400,18 +420,24 @@ def main():
     if "--check" in sys.argv:
         print(f"{len(numeros)} numéro(s) valides.")
         return
+    brouillon = "--brouillon" in sys.argv
+    if brouillon:
+        # Aperçu local : les brouillons sont inclus et signalés. Jamais déployé.
+        OUT = ROOT / "_brouillon"
+    else:
+        numeros = [n for n in numeros if n.get("statut", "publie") == "publie"]
     if OUT.exists():
         shutil.rmtree(OUT)
     shutil.copytree(ROOT / "assets", OUT / "assets")
     nom = BRAND["name"]
     for i, n in enumerate(numeros):
         titre_une = re.sub(r"\[\^[\w-]+\]|[*`]", "", n["une"]["titre"])
-        t = f"{titre_une} | {nom}, n° {n['numero']}"
+        t = f"{'[Brouillon] ' if n.get('statut') == 'brouillon' else ''}{titre_une} | {nom}, n° {n['numero']}"
         ecrire(OUT / "numero" / n["date"] / "index.html",
-               page(t, n["resume"], "../../", numero_html(n, "../../", False), n, f"numero/{n['date']}/").replace("{base}", "../../"))
+               page(t, n["resume"], "../../", numero_html(n, "../../", False), n, f"numero/{n['date']}/", cls(n)).replace("{base}", "../../"))
         if i == 0:
             ecrire(OUT / "index.html",
-                   page(f"{nom} : {titre_une}", n["resume"], "", numero_html(n, "", True), n, f"numero/{n['date']}/").replace("{base}", ""))
+                   page(f"{nom} : {titre_une}", n["resume"], "", numero_html(n, "", True), n, f"numero/{n['date']}/", cls(n)).replace("{base}", ""))
     if not numeros:
         ecrire(OUT / "index.html", page(nom, BRAND.get("tagline", ""), "", archives_html([], ""), None, ""))
     ecrire(OUT / "archives" / "index.html",
@@ -421,7 +447,9 @@ def main():
                                   f'<main id="contenu" class="archives"><h1>Ce parchemin a disparu</h1><p class="vide">La page demandée n\'existe pas. <a href="{racine}">Retour au dernier numéro</a>.</p></main>'))
     ecrire(OUT / "feed.xml", rss(numeros))
     ecrire(OUT / ".nojekyll", "")
-    print(f"{OUT.relative_to(REPO)}/  ({len(numeros)} numéro(s), dernier : {numeros[0]['date'] if numeros else 'aucun'})")
+    nb = sum(n.get("statut") == "brouillon" for n in numeros)
+    print(f"{OUT.relative_to(REPO)}/  ({len(numeros)} numéro(s), dernier : {numeros[0]['date'] if numeros else 'aucun'}"
+          f"{f', dont {nb} brouillon(s)' if nb else ''})")
 
 
 if __name__ == "__main__":
