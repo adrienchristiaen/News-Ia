@@ -1,0 +1,585 @@
+/* La Gazette de l'Algorithme
+   Monde : un quotidien de sorciers imprimé sur papier vieilli. Le cadre (titre, filets, bandeaux,
+   plaque animée) porte le monde ; la colonne de lecture reste calme.
+   Un seul accent (rouille), angles droits partout, une seule animation d'auteur : l'encre du titre. */
+
+@font-face { font-family: "Unifraktur"; src: url("fonts/unifrakturmaguntia-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Playfair"; src: url("fonts/playfair-display-latin-wght-normal.woff2") format("woff2"); font-weight: 400 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Playfair"; src: url("fonts/playfair-display-latin-wght-italic.woff2") format("woff2"); font-weight: 400 900; font-style: italic; font-display: swap; }
+@font-face { font-family: "Source Serif"; src: url("fonts/source-serif-4-latin-opsz-normal.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Source Serif"; src: url("fonts/source-serif-4-latin-opsz-italic.woff2") format("woff2"); font-weight: 200 900; font-style: italic; font-display: swap; }
+
+:root {
+  --papier: #ece2c9;
+  --papier-2: #e2d5b4;
+  --encre: #1d1a14;
+  --encre-2: #4d4535;
+  --filet: #2b261c;
+  --accent: #8c2f1b;
+  --surligne: rgb(140 47 27 / .22);
+  --grain-opacite: .32;
+  --grain-mode: multiply;
+
+  --f-titre: "Unifraktur", "UnifrakturMaguntia", "Old English Text MT", serif;
+  --f-une: "Playfair", "Playfair Display", "Didot", Georgia, serif;
+  --f-texte: "Source Serif", "Source Serif 4", Charter, Georgia, serif;
+
+  --mesure: 1240px;
+  --gouttiere: clamp(16px, 4vw, 48px);
+  --ease-out: cubic-bezier(.23, 1, .32, 1);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --papier: #16140f;
+    --papier-2: #201d16;
+    --encre: #ece3cc;
+    --encre-2: #b8ad93;
+    --filet: #cbbd9c;
+    --accent: #e3825f;
+    --surligne: rgb(227 130 95 / .3);
+    --grain-opacite: .18;
+    --grain-mode: screen;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --papier: #16140f;
+  --papier-2: #201d16;
+  --encre: #ece3cc;
+  --encre-2: #b8ad93;
+  --filet: #cbbd9c;
+  --accent: #e3825f;
+  --surligne: rgb(227 130 95 / .3);
+  --grain-opacite: .18;
+  --grain-mode: screen;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-padding-top: 1.5rem; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scrollbar-color: var(--filet) var(--papier); }
+body {
+  margin: 0;
+  background: var(--papier);
+  color: var(--encre);
+  font-family: var(--f-texte);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  font-optical-sizing: auto;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+/* Grain du papier : calque fixe, jamais sur un conteneur qui défile. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: var(--grain-opacite);
+  mix-blend-mode: var(--grain-mode);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .26 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+::selection { background: var(--surligne); color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+a {
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in srgb, var(--accent) 70%, transparent);
+  text-underline-offset: .18em;
+  transition: text-decoration-color 160ms ease, text-decoration-thickness 160ms ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  a:hover { text-decoration-color: var(--accent); text-decoration-thickness: 2px; }
+}
+code {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: .84em;
+  padding: 0 .25em;
+  background: color-mix(in srgb, var(--encre) 8%, transparent);
+  overflow-wrap: anywhere;
+}
+strong { font-weight: 650; }
+
+.evitement { position: absolute; left: -9999px; top: 0; z-index: 3; background: var(--encre); color: var(--papier); padding: .5em 1em; }
+.evitement:focus { left: var(--gouttiere); }
+
+/* ---------- Tête ---------- */
+
+.tete, .journal, .archives, .pied { position: relative; z-index: 2; max-width: var(--mesure); margin-inline: auto; padding-inline: var(--gouttiere); }
+
+.outils {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(.9rem, 2.4vw, 1.6rem);
+  padding-block: .9rem .4rem;
+  font-size: .9rem;
+  font-variant-caps: all-small-caps;
+  letter-spacing: .06em;
+}
+.outils a { text-decoration-color: transparent; }
+@media (hover: hover) and (pointer: fine) { .outils a:hover { text-decoration-color: var(--accent); } }
+.outils a:first-child { margin-right: auto; }
+
+.theme {
+  font: inherit;
+  letter-spacing: inherit;
+  color: var(--encre);
+  background: transparent;
+  border: 1px solid var(--filet);
+  border-radius: 0;
+  padding: .05rem .75rem .2rem;
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out), background-color 160ms ease;
+}
+.theme:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) { .theme:hover { background: var(--papier-2); } }
+.theme-jour { display: none; }
+:root[data-theme="dark"] .theme-nuit { display: none; }
+:root[data-theme="dark"] .theme-jour { display: inline; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-nuit { display: none; }
+  :root:not([data-theme="light"]) .theme-jour { display: inline; }
+}
+
+.titre-journal {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  padding-block: clamp(.6rem, 2vw, 1.2rem) clamp(.5rem, 1.6vw, 1rem);
+  border-top: 3px solid var(--filet);
+  box-shadow: inset 0 4px 0 -3px var(--papier), inset 0 5px 0 -3px var(--filet);
+}
+.titre-encre {
+  display: inline-block;
+  font-family: var(--f-titre);
+  font-weight: 400;
+  font-size: clamp(2.15rem, 7.4vw, 5.6rem);
+  line-height: 1.02;
+  letter-spacing: -.005em;
+  text-wrap: balance;
+  padding-inline: .1em;
+}
+
+.titre-h1 { margin: 0; font-weight: 400; font-size: clamp(2.15rem, 7.4vw, 5.6rem); line-height: 1.02; }
+.titre-h1 .titre-encre { font-size: 1em; }
+
+/* L'animation d'auteur : l'encre se pose sur le titre, de gauche à droite, sur la une seulement.
+   Le titre est lisible dès la première image ; le front d'encre est un dégradé, pas une coupe nette. */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+  .page-une .titre-encre { animation: encre 750ms var(--ease-out) both; }
+  .page-une .titre-journal::after { animation: filet 600ms var(--ease-out) 200ms both; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-une .titre-encre { animation: encre-douce 200ms ease-out both; }
+}
+@keyframes encre {
+  from {
+    opacity: .35;
+    filter: blur(2px);
+    -webkit-mask-image: linear-gradient(90deg, #000 45%, transparent 55%);
+    mask-image: linear-gradient(90deg, #000 45%, transparent 55%);
+    -webkit-mask-size: 260% 100%;
+    mask-size: 260% 100%;
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    -webkit-mask-image: linear-gradient(90deg, #000 45%, transparent 55%);
+    mask-image: linear-gradient(90deg, #000 45%, transparent 55%);
+    -webkit-mask-size: 260% 100%;
+    mask-size: 260% 100%;
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
+}
+@keyframes encre-douce { from { opacity: 0; } }
+.titre-journal::after {
+  content: "";
+  display: block;
+  height: 1px;
+  margin-top: clamp(.5rem, 1.4vw, .9rem);
+  background: var(--filet);
+  transform-origin: center;
+}
+@keyframes filet { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+.bandeau {
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 2fr) 1fr;
+  align-items: center;
+  gap: 1rem;
+  padding-block: .55rem .65rem;
+  border-bottom: 3px double var(--filet);
+  font-size: .95rem;
+}
+.bandeau p { margin: 0; }
+.bandeau-num { font-family: var(--f-une); font-weight: 700; font-size: 1.15rem; font-variant-numeric: lining-nums; }
+.bandeau-devise { text-align: center; font-style: italic; color: var(--encre-2); text-wrap: balance; }
+.bandeau-date { text-align: right; line-height: 1.35; }
+.bandeau-date time { font-variant-caps: all-small-caps; letter-spacing: .05em; font-size: 1.05rem; }
+.bandeau-date span { color: var(--encre-2); font-size: .88rem; }
+.bandeau--simple { grid-template-columns: 1fr; }
+
+/* ---------- Sommaire ---------- */
+
+.sommaire {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.25rem;
+  align-items: baseline;
+  padding-block: .9rem 1rem;
+  border-bottom: 1px solid var(--filet);
+}
+.sommaire > p { margin: 0; font-variant-caps: all-small-caps; letter-spacing: .08em; color: var(--encre-2); white-space: nowrap; }
+.sommaire ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+}
+.sommaire li { padding-inline: .9rem; border-left: 1px solid color-mix(in srgb, var(--filet) 45%, transparent); font-size: .92rem; line-height: 1.3; }
+.sommaire li:first-child { border-left: 0; padding-left: 0; }
+.sommaire a { text-decoration-color: transparent; font-family: var(--f-une); font-weight: 600; }
+@media (hover: hover) and (pointer: fine) { .sommaire a:hover { text-decoration-color: var(--accent); } }
+
+/* ---------- Bandeaux de rubrique ---------- */
+
+.filet-titre {
+  font: inherit;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  margin-block: 2.6rem 1.4rem;
+}
+.filet-titre::before, .filet-titre::after { content: ""; border-top: 3px double var(--filet); }
+.filet-titre span { font-variant-caps: all-small-caps; letter-spacing: .12em; font-size: 1.05rem; font-weight: 600; }
+
+/* ---------- À la une ---------- */
+
+.une { padding-bottom: 2.4rem; border-bottom: 1px solid var(--filet); }
+.une .filet-titre { margin-top: 1.8rem; }
+.une-grille { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: clamp(1.5rem, 3vw, 2.75rem); }
+.une-titre {
+  margin: 0;
+  font-family: var(--f-une);
+  font-weight: 800;
+  font-size: clamp(2.15rem, 4.9vw, 4.1rem);
+  line-height: 1.03;
+  letter-spacing: -.018em;
+  text-wrap: balance;
+}
+.une-chapo {
+  margin: .9rem 0 1.4rem;
+  max-width: 46ch;
+  font-size: clamp(1.15rem, 1.8vw, 1.32rem);
+  line-height: 1.42;
+  font-style: italic;
+  color: var(--encre-2);
+  text-wrap: pretty;
+}
+.une-corps { columns: 2 18rem; column-gap: 2.2rem; column-rule: 1px solid color-mix(in srgb, var(--filet) 35%, transparent); }
+.une-corps p, .papier-corps p { margin: 0 0 .85em; hyphens: auto; -webkit-hyphens: auto; text-wrap: pretty; }
+.lettrine > p:first-child::first-letter {
+  float: left;
+  font-family: var(--f-titre);
+  font-size: 4.35em;
+  line-height: .82;
+  padding: .06em .08em 0 0;
+  color: var(--accent);
+}
+.une-aside { border-left: 1px solid var(--filet); padding-left: clamp(1.2rem, 2.6vw, 2.2rem); }
+
+sup.ref { line-height: 0; font-size: .68em; font-variant-numeric: lining-nums tabular-nums; }
+sup.ref a { position: relative; color: var(--accent); text-decoration: none; padding-inline: .08em; font-weight: 600; }
+sup.ref a::after { content: ""; position: absolute; inset: -14px -8px; }
+sup.ref a:target { background: var(--surligne); }
+
+/* ---------- Plaque animée (la « photo vivante » du journal) ---------- */
+
+.plaque { margin: 0; }
+.plaque-cadre {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  background: var(--papier-2);
+  border: 1px solid var(--filet);
+  outline: 1px solid var(--filet);
+  outline-offset: 5px;
+  margin: 6px;
+  isolation: isolate;
+}
+.plaque-gravure, .plaque-lueur { position: absolute; inset: -20%; pointer-events: none; }
+.plaque-gravure {
+  z-index: -2;
+  background:
+    repeating-linear-gradient(118deg, color-mix(in srgb, var(--encre) 16%, transparent) 0 1px, transparent 1px 6px),
+    repeating-linear-gradient(28deg, color-mix(in srgb, var(--encre) 9%, transparent) 0 1px, transparent 1px 9px);
+  -webkit-mask-image: radial-gradient(ellipse 58% 52% at 50% 46%, transparent 32%, #000 92%);
+  mask-image: radial-gradient(ellipse 58% 52% at 50% 46%, transparent 32%, #000 92%);
+}
+.plaque-lueur {
+  z-index: -1;
+  background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--papier) 85%, transparent) 0, transparent 38%);
+  opacity: .8;
+}
+@media (prefers-reduced-motion: no-preference) {
+  /* La photo vivante bouge, puis se pose : pas de mouvement perpétuel à côté du texte. */
+  .plaque-gravure { animation: gravure 16s ease-in-out 2 alternate; }
+  .plaque-lueur { animation: lueur 11s ease-in-out 2 alternate; }
+}
+@keyframes gravure {
+  from { transform: translate3d(-3%, 1%, 0) rotate(-1deg) scale(1.02); }
+  to { transform: translate3d(3%, -1.5%, 0) rotate(1deg) scale(1.06); }
+}
+@keyframes lueur {
+  from { transform: translate3d(-12%, -8%, 0); opacity: .55; }
+  to { transform: translate3d(10%, 9%, 0); opacity: .9; }
+}
+.plaque-valeur {
+  margin: 0;
+  font-family: var(--f-une);
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(3.4rem, 7vw, 5.6rem);
+  line-height: 1.1;
+  padding-bottom: .05em;
+  letter-spacing: -.03em;
+  font-variant-numeric: lining-nums;
+}
+.plaque-unite { margin: .1rem 1.2rem 0; font-variant-caps: all-small-caps; letter-spacing: .04em; font-size: 1.05rem; line-height: 1.3; text-wrap: balance; }
+.plaque figcaption, .cliche figcaption {
+  margin-top: 1rem;
+  font-size: .93rem;
+  line-height: 1.45;
+  font-style: italic;
+  color: var(--encre-2);
+}
+
+.cliche { margin: 0; }
+.cliche img { display: block; width: 100%; height: auto; border: 1px solid var(--filet); filter: sepia(.35) contrast(1.05); }
+
+.exergue { margin: 1.4rem 0 .4rem; padding-block: 1rem; border-block: 1px solid var(--filet); break-inside: avoid; }
+.exergue blockquote { margin: 0; }
+.exergue blockquote p {
+  margin: 0;
+  font-family: var(--f-une);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.3rem, 2.2vw, 1.6rem);
+  line-height: 1.32;
+  text-wrap: balance;
+}
+.exergue blockquote p::before { content: "«\00a0"; color: var(--accent); }
+.exergue blockquote p::after { content: "\00a0»"; color: var(--accent); }
+.exergue figcaption { margin-top: .6rem; font-size: .9rem; color: var(--encre-2); }
+
+/* ---------- Articles ---------- */
+
+.papiers {
+  --g: clamp(1.5rem, 3vw, 2.75rem);
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 0;
+}
+.papier { padding-block: 2rem 2.2rem; border-bottom: 1px solid var(--filet); }
+.papier--large { grid-column: span 7; }
+.papier--etroit { grid-column: span 5; }
+.papier--plein { grid-column: 1 / -1; }
+/* Les filets horizontaux rejoignent le filet vertical, comme sur une vraie page montée. */
+.papiers > .papier:nth-child(odd):not(.papier--plein) { padding-right: var(--g); }
+.papiers > .papier:nth-child(even):not(.papier--plein) {
+  border-left: 1px solid color-mix(in srgb, var(--filet) 45%, transparent);
+  padding-left: var(--g);
+}
+.papier-titre {
+  margin: 0;
+  font-family: var(--f-une);
+  font-weight: 750;
+  font-size: clamp(1.5rem, 2.6vw, 2.15rem);
+  line-height: 1.08;
+  letter-spacing: -.012em;
+  text-wrap: balance;
+}
+.papier--etroit .papier-titre { font-size: clamp(1.4rem, 2.1vw, 1.75rem); }
+.chapo { margin: .6rem 0 1.1rem; font-style: italic; color: var(--encre-2); line-height: 1.45; text-wrap: pretty; }
+.papier--large .papier-corps { max-width: 68ch; }
+.papier--plein .papier-corps { columns: 2 22rem; column-gap: 2rem; column-rule: 1px solid color-mix(in srgb, var(--filet) 35%, transparent); }
+
+/* ---------- Hiboux express (brèves) ---------- */
+
+.hiboux { padding-bottom: 1.6rem; border-bottom: 1px solid var(--filet); }
+.hiboux-liste { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); gap: 1.35rem 2.2rem; }
+.hiboux-liste li { min-width: 0; }
+.hiboux-liste h3 { margin: 0 0 .25rem; font-family: var(--f-une); font-weight: 700; font-size: 1.12rem; line-height: 1.22; text-wrap: balance; }
+.hiboux-liste p { margin: 0; font-size: .98rem; line-height: 1.55; text-wrap: pretty; }
+
+/* ---------- La salle commune (ce dont parlent les communautés) ---------- */
+
+.salle { padding-bottom: 2rem; border-bottom: 1px solid var(--filet); }
+.salle-intro { max-width: 68ch; margin: 0 auto 1.6rem; text-align: center; font-style: italic; color: var(--encre-2); text-wrap: balance; }
+.salle-liste { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap: 0 clamp(1.5rem, 3vw, 2.75rem); }
+.salle-liste li { padding-block: 1rem 1.1rem; border-top: 1px solid color-mix(in srgb, var(--filet) 45%, transparent); }
+.salle-liste p { margin: 0; }
+.salle-lieu { font-variant-caps: all-small-caps; letter-spacing: .08em; color: var(--encre-2); font-size: .95rem; }
+.salle-titre { font-family: var(--f-une); font-style: italic; font-weight: 600; font-size: 1.22rem; line-height: 1.25; margin: .15rem 0 .35rem; text-wrap: balance; }
+.salle-titre a { text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+.salle-chiffres { display: flex; flex-wrap: wrap; gap: .3rem 1.1rem; font-size: .9rem; color: var(--encre-2); font-variant-numeric: lining-nums tabular-nums; }
+.salle-chiffres strong { color: var(--encre); font-family: var(--f-une); font-size: 1.05rem; font-weight: 700; }
+.salle-liste .salle-note { margin-top: .45rem; font-size: .96rem; line-height: 1.5; }
+
+/* ---------- Sources ---------- */
+
+.sources { padding-block: 1.8rem 1rem; }
+.sources .filet-titre { margin-top: .6rem; }
+.sources .retour { font-size: .82rem; color: var(--encre-2); text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent); white-space: nowrap; }
+.sources ol { margin: 0; padding-left: 1.6rem; columns: 2 22rem; column-gap: 2.4rem; font-size: .86rem; line-height: 1.45; }
+.sources li { break-inside: avoid; margin-bottom: .45rem; padding-left: .2rem; }
+.sources li::marker { color: var(--accent); font-variant-numeric: tabular-nums; font-weight: 600; }
+.sources li span { color: var(--encre-2); }
+.sources li:target { background: var(--surligne); }
+.numero-pied { text-align: center; font-size: .9rem; color: var(--encre-2); margin: 1.4rem 0 0; }
+.numero-pied a { margin-left: .4rem; }
+.numero-resume { max-width: 62ch; margin: 1.4rem auto 0; text-align: center; font-style: italic; font-size: 1.12rem; line-height: 1.5; color: var(--encre); text-wrap: balance; }
+.numeros-nav { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .6rem 1.5rem; margin: 1.6rem 0 0; padding-top: 1rem; border-top: 1px solid color-mix(in srgb, var(--filet) 45%, transparent); font-size: .95rem; }
+.numeros-nav a[rel="next"] { margin-left: auto; }
+.numeros-nav span { color: var(--encre-2); font-style: italic; }
+.outils a[aria-current] { text-decoration-color: var(--accent); }
+
+/* ---------- Archives ---------- */
+
+.archives h1 {
+  margin: 2.2rem 0 .3rem;
+  font-family: var(--f-une);
+  font-weight: 800;
+  font-size: clamp(2rem, 4.6vw, 3.4rem);
+  letter-spacing: -.015em;
+}
+.archives-intro, .vide { color: var(--encre-2); font-style: italic; margin: 0 0 1.6rem; }
+.archives section h2 { margin: 2rem 0 0; padding-bottom: .4rem; border-bottom: 3px double var(--filet); font-weight: 600; font-variant-caps: all-small-caps; letter-spacing: .1em; font-size: 1.1rem; }
+.archives ol { list-style: none; margin: 0; padding: 0; }
+.archives li a {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr) auto;
+  grid-template-areas: "num titre date" "num resume date";
+  gap: .2rem 1.4rem;
+  padding: 1.1rem 0;
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--filet) 40%, transparent);
+  transition: background-color 160ms ease;
+}
+@media (hover: hover) and (pointer: fine) { .archives li a:hover { background: var(--papier-2); } }
+.archives li a:active { background: var(--papier-2); }
+.arch-num { grid-area: num; font-family: var(--f-une); font-weight: 800; font-size: 1.5rem; line-height: 1.1; font-variant-numeric: lining-nums; }
+.arch-titre { grid-area: titre; font-family: var(--f-une); font-weight: 700; font-size: 1.35rem; line-height: 1.2; text-wrap: balance; }
+.arch-resume { grid-area: resume; color: var(--encre-2); max-width: 70ch; }
+.archives time { grid-area: date; font-variant-caps: all-small-caps; letter-spacing: .05em; color: var(--encre-2); white-space: nowrap; }
+
+/* ---------- Pied ---------- */
+
+.pied {
+  width: min(calc(var(--mesure) - 2 * var(--gouttiere)), calc(100% - 2 * var(--gouttiere)));
+  padding-inline: 0;
+  margin-top: 2.4rem;
+  padding-block: 1.4rem 2.6rem;
+  border-top: 3px double var(--filet);
+  text-align: center;
+  font-size: .9rem;
+  color: var(--encre-2);
+}
+.pied p { margin: .2rem 0; }
+.pied a { margin-inline: .5rem; }
+
+/* ---------- Petits écrans ---------- */
+
+/* Brouillon : une épreuve d'imprimerie, annotée en rouille, qui ne sort jamais en ligne. */
+.relecture {
+  max-width: calc(var(--mesure) - 2 * var(--gouttiere));
+  margin: 0 auto 2.5rem;
+  padding: 1.25rem 1.5rem 1.4rem;
+  border: 1.5px dashed var(--accent);
+  background: var(--papier-2);
+  color: var(--encre);
+  font-family: var(--f-texte);
+}
+.relecture h2 {
+  margin: 0 0 .4rem;
+  font-family: var(--f-une);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--accent);
+  text-wrap: balance;
+}
+.relecture p { margin: 0 0 .6rem; max-width: 70ch; }
+.relecture ul { margin: 0 0 .8rem; padding-left: 1.2rem; display: grid; gap: .35rem; max-width: 80ch; }
+.relecture li::marker { color: var(--accent); content: "✎  "; }
+.relecture code { font-size: .9em; background: var(--papier); padding: .05em .35em; overflow-wrap: anywhere; }
+.relecture-cmd { font-size: .92rem; color: var(--encre-2); }
+.relecture { position: relative; }
+.relecture::after {
+  content: "Épreuve";
+  position: absolute;
+  top: 1rem;
+  right: 1.25rem;
+  padding: .1rem .55rem;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-family: var(--f-une);
+  font-weight: 800;
+  font-size: .78rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  transform: rotate(4deg);
+  pointer-events: none;
+}
+
+@media (max-width: 1000px) {
+  .sommaire { grid-template-columns: 1fr; gap: .5rem; }
+  .sommaire ol { grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .45rem 0; }
+  .sommaire li:nth-child(odd) { border-left: 0; padding-left: 0; }
+  .une-grille { grid-template-columns: 1fr; }
+  .une-aside { border-left: 0; padding-left: 0; border-top: 1px solid var(--filet); padding-top: 1.6rem; }
+  .plaque { max-width: 26rem; margin-inline: auto; }
+  .plaque-cadre { aspect-ratio: 5 / 4; }
+  .papier--large, .papier--etroit { grid-column: 1 / -1; }
+  .papiers > .papier:nth-child(even):not(.papier--plein) { border-left: 0; padding-left: 0; }
+  .papiers > .papier:nth-child(odd):not(.papier--plein) { padding-right: 0; }
+}
+@media (max-width: 640px) {
+  body { font-size: 1.03rem; }
+  .outils { font-size: .95rem; }
+  .bandeau { grid-template-columns: 1fr; text-align: center; gap: .35rem; }
+  .bandeau-date { text-align: center; }
+  .bandeau-num { order: 2; font-size: 1rem; }
+  .sommaire ol { grid-template-columns: 1fr; }
+  .sommaire li { border-left: 0; padding-left: 0; }
+  /* Cibles tactiles : 44 px de haut sans changer le dessin. */
+  .outils { padding-block: .3rem 0; }
+  .outils a, .theme { min-height: 44px; display: inline-flex; align-items: center; }
+  .theme { padding-block: 0; }
+  .sommaire a { display: block; padding-block: .6rem; }
+  .une-corps p, .papier-corps p { text-align: left; }
+  .archives li a { grid-template-columns: 1fr; grid-template-areas: "num" "titre" "resume" "date"; }
+  .arch-num { font-size: 1.1rem; }
+}
+
+@media print {
+  body::before, .outils, .evitement { display: none; }
+  body { background: #fff; color: #000; }
+  .titre-encre, .titre-journal::after { animation: none; }
+}
+.theme[hidden] { display: none; }
