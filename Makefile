@@ -29,4 +29,17 @@ export:          ## prépare tiktok/reels/shorts + légende
 site:            ## site en local
 	cd web && npm run dev
 
-.PHONY: help setup test veille align video export site
+gazette:         ## LA commande hebdo : veille, rédaction, vérification, build et publication du numéro
+	git pull --rebase --autostash
+	claude -p "Utilise le skill gazette-ia pour produire et publier le numéro de cette semaine." \
+	  --permission-mode acceptEdits \
+	  --allowedTools "WebSearch" "WebFetch" "Read" "Write" "Edit" "Glob" "Grep" \
+	    "Bash(python3 hebdo/*)" "Bash(git add:*)" "Bash(git commit:*)" "Bash(git push:*)" "Bash(git status:*)" "Bash(git diff:*)" "Bash(git log:*)"
+
+gazette-site:    ## reconstruit le site de la gazette dans hebdo/_site
+	python3 hebdo/build.py
+
+gazette-voir:    ## construit puis sert le site sur http://localhost:8000
+	python3 hebdo/build.py && python3 -m http.server 8000 -d hebdo/_site
+
+.PHONY: help setup test veille align video export site gazette gazette-site gazette-voir

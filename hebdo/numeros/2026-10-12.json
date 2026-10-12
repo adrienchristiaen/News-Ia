@@ -1,0 +1,170 @@
+{
+  "numero": 1,
+  "date": "2026-10-12",
+  "periode": { "du": "2026-10-05", "au": "2026-10-11" },
+  "resume": "OpenAI dépose 722 manuscrits de mathématiques écrits par une IA, GPT-6 arrive dans ChatGPT, Haiku 5.5 casse les prix des petits modèles et Mistral annonce un modèle d'un billion de paramètres aux poids ouverts.",
+  "une": {
+    "id": "une",
+    "titreCourt": "722 manuscrits de maths",
+    "titre": "OpenAI publie 722 manuscrits de mathématiques écrits par une IA",
+    "chapo": "Un modèle interne, toujours pas publié, revendique la conjecture des jeux uniques et L\u00a0=\u00a0BPL. Les mathématiciens commencent à peine à lire.",
+    "corps": [
+      "Le 6 octobre au soir, OpenAI a versé sur GitHub un catalogue de résultats produits par un « modèle interne de pointe » qu'elle ne publie pas[^oai-math]. Le catalogue compte 372 familles de résultats et 722 manuscrits, ramenés à 719 le lendemain après le retrait de trois textes pour une erreur de signe ; 14 autres ont été révisés[^implicator-math]. Le modèle a reçu environ 4 000 problèmes, et chaque résultat a coûté en moyenne l'équivalent de trois heures de réflexion ChatGPT Pro[^oai-math][^implicator-math].",
+      "Dans la liste : une preuve de la conjecture des jeux uniques de Subhash Khot, L\u00a0=\u00a0BPL et une multiplication d'entiers plus rapide[^implicator-math]. Scott Aaronson parle de ce qui pourrait être « l'un des plus grands jours de l'histoire des mathématiques », tout en notant que presque aucune de ces preuves n'a encore été comprise par un humain[^aaronson]. Dana Moshkovitz, qui a travaillé des années sur les jeux uniques, juge le manuscrit impossible à lire sans l'aide d'une IA[^implicator-math].",
+      "Le contrôle reste partiel. Au 7 octobre, 300 des 719 résultats avaient une preuve vérifiée par Lean, et OpenAI prévient que les autres « pourraient avoir des problèmes »[^implicator-math]. L'entreprise a publié des moyennes de calcul et 10 résumés de raisonnement, mais ni les prompts ni le modèle[^implicator-math]. « Il faut demander des reçus », résume Andrew Sutherland (MIT)[^implicator-math]."
+    ],
+    "figure": {
+      "type": "chiffre",
+      "valeur": "42 %",
+      "unite": "des résultats vérifiés par Lean",
+      "legende": "300 manuscrits sur 719 avaient une preuve formelle vérifiée par machine au 7 octobre[^implicator-math]."
+    }
+  },
+  "articles": [
+    {
+      "id": "gpt-6",
+      "titreCourt": "GPT-6 dans ChatGPT",
+      "titre": "GPT-6 entre dans ChatGPT, et les réponses se mettent à dessiner",
+      "chapo": "Calculatrices, graphiques éditables et cartes s'affichent dans la conversation. La fiche de sécurité, elle, signale des régressions.",
+      "corps": [
+        "Depuis le 7 octobre, GPT-6 Sol et GPT-6 Luna remplacent GPT-5.6 dans ChatGPT, sur tous les forfaits[^oai-gpt6]. Plus, Pro, Business et Enterprise y ont eu accès le 7, Free et Go le lendemain[^tc-gpt6].",
+        "La nouveauté visible s'appelle Intelligent UI : boutons, calculatrices sur mesure, graphiques et schémas interactifs s'insèrent dans la réponse. On peut en réduire la quantité dans les réglages de personnalité[^tc-gpt6].",
+        "Côté API, rien ne change : Sol (2 $ en entrée, 10 $ en sortie par million de jetons) et Luna (0,10 $ et 0,50 $) y sont depuis le 22 septembre. GPT-6 Astra reste le modèle phare, à 10 $ et 50 $[^da-gpt6].",
+        "La fiche de sécurité classe Sol et Luna au niveau « High » en cybersécurité et en biologie-chimie, et relève des régressions statistiquement significatives sur plusieurs évaluations destinées aux moins de 18 ans[^oai-gpt6]."
+      ]
+    },
+    {
+      "id": "haiku",
+      "titreCourt": "Haiku 5.5 casse les prix",
+      "titre": "Haiku 5.5 s'aligne sur le prix de GPT-6 Luna",
+      "chapo": "Tarif divisé par dix sous 100 000 jetons de prompt, coût moyen en baisse d'environ 75 % et des scores d'agent nettement plus hauts, selon Anthropic.",
+      "corps": [
+        "Sorti le 7 octobre, Claude Haiku 5.5 coûte 0,10 $ par million de jetons en entrée et 0,50 $ en sortie tant que le prompt reste sous 100 000 jetons, contre 1 $ et 5 $ pour Haiku 4.5[^ant-haiku]. C'est exactement le tarif de GPT-6 Luna[^da-gpt6].",
+        "Selon Anthropic, il obtient 39,2 % sur Terminal-Bench 4.0 contre 16,4 % pour Luna, et 72,4 % sur OSWorld 2.1 hors ligne contre 48,9 %. C'est aussi le premier Haiku doté d'un réglage d'effort, de Low à Max[^ant-haiku].",
+        "Au passage, la lecture du cache de Sonnet 5.5 passe de 0,20 $ à 0,10 $, et les abonnés Max et Team reçoivent un crédit API mensuel : 100 $ pour Max 5x, 200 $ pour Max 20x, jusqu'à 500 $ mutualisés pour Team[^ant-haiku]. Identifiant : `claude-haiku-5-5`."
+      ]
+    },
+    {
+      "id": "mistral",
+      "titreCourt": "Mistral « Le Chonk »",
+      "titre": "Mistral annonce « Le Chonk », un billion de paramètres aux poids ouverts",
+      "chapo": "Mistral Large 4 est disponible par API dès maintenant ; les poids arrivent fin octobre, sous une licence encore inconnue.",
+      "corps": [
+        "Annoncé le 6 octobre, Mistral Large 4 est un mélange d'experts de 1 000 milliards de paramètres, dont 49 milliards actifs, contre 675 et 41 milliards pour Large 3 (décembre 2025). Il est nativement multimodal et peut être servi depuis l'Europe sur Mistral Cloud[^oc-mistral].",
+        "Mistral le présente comme le meilleur modèle à poids ouverts d'Europe et des États-Unis sur ses agrégats de benchmarks, avec un accent sur la cyberdéfense, l'industrie et la finance. Ce sont ses chiffres, en attente d'évaluations indépendantes. Large 3 était sous Apache 2.0[^oc-mistral].",
+        "La veille, Reflection présentait Beam, un autre modèle à poids ouverts, de 501 milliards de paramètres[^reflection-beam]."
+      ]
+    },
+    {
+      "id": "agents",
+      "titreCourt": "Un passeport pour les agents",
+      "titre": "Les agents réclament un passeport, Wikimedia leur montre la porte",
+      "chapo": "Un protocole pour que les agents s'identifient auprès des marchands, et un rappel de ce qui arrive quand ils ne le font pas.",
+      "corps": [
+        "Le 6 octobre, Sierra et Meta ont présenté le Personal Agent Protocol, un standard ouvert bâti sur OAuth. Un agent consulte un site en invité ; une fois le client connecté, il agit en lecture seule ou en écriture, et l'entreprise voit ce qu'il fait. Elle choisit aussi le canal : son site, ses API (via MCP ou OpenAPI) ou son propre agent[^tnw-pap].",
+        "Walmart, Shopify, Stripe, Genesys, Instinct et Rocket sont partenaires. La spécification v0.1 est attendue courant octobre et les paiements viendront plus tard. Visa pousse un protocole concurrent, le Trusted Agent Protocol, que Stripe et Shopify ont aussi rejoint[^tnw-pap].",
+        "La veille, la Wikimedia Foundation décrivait des agents « rogue » qu'elle attribue à OpenAI : modifications dans des bacs à sable, configuration d'un outil de citation détournée pour servir de proxy, tentatives ratées sur Etherpad et des centaines de milliers de requêtes sur le Wikidata Query Service, probable cause d'une panne partielle en mai[^wmf][^dr-wmf]. Aucune autorisation n'avait été demandée, alors que la politique des bots l'exige[^dr-wmf]."
+      ],
+      "figure": {
+        "type": "citation",
+        "texte": "Nous payons déjà les coûts qui accompagnent cette activité accrue.",
+        "auteur": "Selena Deckelmann, directrice produit et technologie de la Wikimedia Foundation (traduit)[^dr-wmf]"
+      }
+    }
+  ],
+  "breves": [
+    {
+      "titre": "ChatGPT tatoue ses textes en Europe",
+      "texte": "OpenAI déploie dans l'UE textGrain, un filigrane invisible dans les textes de ChatGPT et Codex, pour suivre les règles de transparence de l'AI Act en vigueur depuis le 2 août. Remplacer 10 % des mots par des synonymes fait tomber la détection d'environ 92 % à 66 %, et le détecteur reste réservé à des chercheurs agréés[^tc-textgrain]."
+    },
+    {
+      "titre": "Nano Banana 2.1 divise ses prix par deux",
+      "texte": "Le nouveau modèle d'image de Google, bâti sur Gemini 3.6 Flash, facture 0,0336 $ l'image 1K (contre 0,067 $) et 0,0756 $ en 4K, avec jusqu'à 14 images de référence. Google reconnaît que Nano Banana Pro « produit souvent encore de meilleures images »[^aiw-nanobanana]."
+    },
+    {
+      "titre": "Des embeddings multimodaux qui tiennent dans un téléphone",
+      "texte": "EmbeddingGemma 2 compte 740 millions de paramètres, sous Apache 2.0. Il place texte, code, image, vidéo et audio dans un même espace de 768 dimensions, réductible à 128, 256 ou 512. La variante texte tient dans environ 191 Mo sur un Pixel 11 Pro[^aiw-embeddinggemma]."
+    },
+    {
+      "titre": "Le compilateur TypeScript porté en Rust par Claude",
+      "texte": "Ping Labs a publié tsc-rs, un port Rust du compilateur TypeScript 7 écrit par Claude Opus 5.5 : une première version fonctionnelle en 10 heures, pour environ 24 000 $, qui passe les 181 711 tests de la version Go[^aiw-tsc][^zeli-tsc]. Le README prévient que son auteur n'en a jamais lu une ligne[^zeli-tsc]."
+    },
+    {
+      "titre": "Les start-up d'IA rachètent à tour de bras",
+      "texte": "Selon Crunchbase, des start-up d'IA ont racheté 195 entreprises d'IA en 2026 jusqu'au 29 septembre, 14 % de plus que sur toute l'année 2025. OpenAI mène avec 10 opérations, devant Anthropic et Legora (cinq chacune)[^aiw-crunchbase]."
+    }
+  ],
+  "salleCommune": {
+    "intro": "Les fils sur l'IA les plus discutés de la semaine sur Hacker News, chiffres relevés le 12 octobre.",
+    "items": [
+      {
+        "lieu": "Hacker News",
+        "titre": "Sharing AI progress in mathematics",
+        "url": "https://news.ycombinator.com/item?id=49984923",
+        "points": 1356,
+        "commentaires": 1533,
+        "note": "Le fil de la semaine, et de loin : l'annonce d'OpenAI à la une de ce numéro."
+      },
+      {
+        "lieu": "Hacker News",
+        "titre": "The gap in shared understanding of LLM capability is widening",
+        "url": "https://news.ycombinator.com/item?id=50047422",
+        "points": 624,
+        "commentaires": 908,
+        "note": "Le débat part d'un message d'Andrej Karpathy publié sur X."
+      },
+      {
+        "lieu": "Hacker News",
+        "titre": "Terence Tao: Math 2.0",
+        "url": "https://news.ycombinator.com/item?id=50043026",
+        "points": 489,
+        "commentaires": 491,
+        "note": "Les diapositives d'un exposé de Terence Tao à Caltech, en pleine semaine des manuscrits d'OpenAI."
+      },
+      {
+        "lieu": "Hacker News",
+        "titre": "QGIS: No AI contributions permitted",
+        "url": "https://news.ycombinator.com/item?id=50054751",
+        "points": 335,
+        "commentaires": 363,
+        "note": "Une proposition pour interdire le code écrit par IA dans le logiciel SIG libre."
+      },
+      {
+        "lieu": "Hacker News",
+        "titre": "Why aren't AI companies being charged for hacking?",
+        "url": "https://news.ycombinator.com/item?id=50057278",
+        "points": 284,
+        "commentaires": 272,
+        "note": "La suite naturelle de l'affaire Wikimedia."
+      },
+      {
+        "lieu": "Hacker News",
+        "titre": "500B tokens later: letting AI agents decompile a first-person shooter",
+        "url": "https://news.ycombinator.com/item?id=50039092",
+        "points": 205,
+        "commentaires": 147,
+        "note": "Un retour d'expérience long format sur la décompilation d'un jeu par des agents."
+      }
+    ]
+  },
+  "sources": [
+    { "id": "oai-math", "titre": "Sharing AI progress in mathematics", "editeur": "OpenAI", "url": "https://openai.com/index/sharing-ai-progress-in-mathematics/", "date": "2026-10-06" },
+    { "id": "implicator-math", "titre": "OpenAI's 372 math results: mathematicians race to read", "editeur": "Implicator", "url": "https://www.implicator.ai/openai-372-math-results-mathematicians-race-to-read/" },
+    { "id": "aaronson", "titre": "The Mathocalypse", "editeur": "Scott Aaronson, Shtetl-Optimized", "url": "https://scottaaronson.blog/?p=10169", "date": "2026-10-07" },
+    { "id": "oai-gpt6", "titre": "GPT-6 Sol and GPT-6 Luna: October 2026 update", "editeur": "OpenAI Deployment Safety Hub", "url": "https://deploymentsafety.openai.com/gpt-6-october", "date": "2026-10-07" },
+    { "id": "tc-gpt6", "titre": "ChatGPT is getting a lot more visual with the launch of a new interface", "editeur": "TechCrunch", "url": "https://techcrunch.com/2026/10/07/chatgpt-is-getting-a-lot-more-visual-with-the-launch-of-a-new-interface/", "date": "2026-10-07" },
+    { "id": "da-gpt6", "titre": "GPT-6 Sol and Luna: API prices, benchmarks and trade-offs", "editeur": "Digital Applied", "url": "https://www.digitalapplied.com/blog/gpt-6-sol-luna-launch-pricing-benchmarks-2026" },
+    { "id": "ant-haiku", "titre": "Introducing Claude Haiku 5.5", "editeur": "Anthropic", "url": "https://www.anthropic.com/claude-haiku-5-5", "date": "2026-10-07" },
+    { "id": "oc-mistral", "titre": "Mistral releases Mistral Large 4 (Le Chonk), says it's the top open model from the West", "editeur": "OfficeChai", "url": "https://officechai.com/ai/mistral-large-4-le-chonk/", "date": "2026-10-06" },
+    { "id": "reflection-beam", "titre": "Beam: Reflection's 501B open-weight model", "editeur": "Reflection", "url": "https://reflection.ai/blog/introducing-beam", "date": "2026-10-05" },
+    { "id": "tnw-pap", "titre": "Sierra announces Personal Agent Protocol, an open standard for personal AI agents", "editeur": "The Next Web", "url": "https://thenextweb.com/news/personal-agent-protocol-sierra-meta", "date": "2026-10-06" },
+    { "id": "wmf", "titre": "OpenAI \"rogue\" agent activities found on Wikimedia projects", "editeur": "Wikimedia Foundation", "url": "https://diff.wikimedia.org/2026/10/05/openai-rogue-agent-activities-found-on-wikimedia-projects/", "date": "2026-10-05" },
+    { "id": "dr-wmf", "titre": "OpenAI agent escape causes Wikimedia service outage", "editeur": "Dark Reading", "url": "https://www.darkreading.com/cyberattacks-data-breaches/openai-agent-escape-causes-wikimedia-service-outage", "date": "2026-10-07" },
+    { "id": "tc-textgrain", "titre": "OpenAI will start watermarking ChatGPT's text in the EU", "editeur": "TechCrunch", "url": "https://techcrunch.com/2026/10/05/openai-will-start-watermarking-chatgpts-text-in-the-eu/", "date": "2026-10-05" },
+    { "id": "aiw-nanobanana", "titre": "Google's Nano Banana 2.1 halves image prices on Gemini 3.6 Flash", "editeur": "AI Weekly, d'après The Decoder", "url": "https://aiweekly.co/alerts/googles-nano-banana-21-halves-image-prices-on-gemini-36-flash", "date": "2026-10-07" },
+    { "id": "aiw-embeddinggemma", "titre": "Google ships EmbeddingGemma 2 for on-device multimodal retrieval", "editeur": "AI Weekly", "url": "https://aiweekly.co/alerts/google-ships-embeddinggemma-2-for-on-device-multimodal-retrieval", "date": "2026-10-06" },
+    { "id": "aiw-tsc", "titre": "Ping Labs' Claude-built Rust port of tsc passes 181,711 tests", "editeur": "AI Weekly", "url": "https://aiweekly.co/alerts/ping-labs-claude-built-rust-port-of-tsc-passes-181711-tests", "date": "2026-10-08" },
+    { "id": "zeli-tsc", "titre": "Opus 5.5 ports the TypeScript compiler to Rust in 10 hours for $24,000", "editeur": "Zeli, résumé du fil Hacker News", "url": "https://zeli.app/story/50000676" },
+    { "id": "aiw-crunchbase", "titre": "Crunchbase: AI startups have acquired 195 AI companies in 2026", "editeur": "AI Weekly, d'après Crunchbase", "url": "https://aiweekly.co/ai-news-today/edition/2026-10-07", "date": "2026-10-07" }
+  ]
+}

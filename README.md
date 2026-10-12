@@ -38,6 +38,10 @@ cd ../web && npm run dev                                    # http://localhost:3
 4. **Vidéo** : `make video WEEK=2026-w40` puis `make export WEEK=2026-w40` → `out/2026-w40/{tiktok,reels,shorts}.mp4` (volume normalisé) et `legende.txt` (texte, hashtags, sources prêts à coller).
 5. **Gazette** : `cd web && npm run build` génère un site 100 % statique dans `web/out/` (Vercel, Netlify, GitHub Pages). Le dernier numéro est en une, les anciens sont dans les archives.
 
+## Le site hebdo (La Gazette, version journal)
+
+`make gazette` produit et publie le numéro de la semaine du site [hebdo/](hebdo/README.md) : veille (presse, Reddit, Hacker News), choix et vérification des sujets par Claude Code, build statique, push, puis publication sur GitHub Pages.
+
 ## Organisation
 
 | Dossier | Rôle |

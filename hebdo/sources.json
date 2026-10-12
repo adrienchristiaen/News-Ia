@@ -1,0 +1,26 @@
+{
+  "_comment": "Sources de la veille hebdo. Poids 1 à 3 = confiance. Un flux qui échoue est ignoré avec un avertissement. X n'a pas d'accès libre : ses débats sont repérés via la presse, Hacker News et Reddit.",
+  "jours": 8,
+  "flux": [
+    { "nom": "OpenAI", "url": "https://openai.com/news/rss.xml", "poids": 3 },
+    { "nom": "Google DeepMind", "url": "https://deepmind.google/blog/rss.xml", "poids": 3 },
+    { "nom": "Google AI", "url": "https://blog.google/technology/ai/rss/", "poids": 3 },
+    { "nom": "Hugging Face", "url": "https://huggingface.co/blog/feed.xml", "poids": 2 },
+    { "nom": "Simon Willison", "url": "https://simonwillison.net/atom/everything/", "poids": 2 },
+    { "nom": "The Decoder", "url": "https://the-decoder.com/feed/", "poids": 2 },
+    { "nom": "The Verge (IA)", "url": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml", "poids": 2 },
+    { "nom": "TechCrunch (IA)", "url": "https://techcrunch.com/category/artificial-intelligence/feed/", "poids": 2 },
+    { "nom": "Ars Technica (IA)", "url": "https://arstechnica.com/ai/feed/", "poids": 2 },
+    { "nom": "MIT Technology Review", "url": "https://www.technologyreview.com/topic/artificial-intelligence/feed", "poids": 2 },
+    { "nom": "VentureBeat (IA)", "url": "https://venturebeat.com/category/ai/feed/", "poids": 1 },
+    { "nom": "Import AI", "url": "https://importai.substack.com/feed", "poids": 2 },
+    { "nom": "Interconnects", "url": "https://www.interconnects.ai/feed", "poids": 2 },
+    { "nom": "Le Monde Pixels", "url": "https://www.lemonde.fr/pixels/rss_full.xml", "poids": 1 }
+  ],
+  "reddit": ["LocalLLaMA", "MachineLearning", "singularity", "OpenAI", "ClaudeAI", "artificial", "StableDiffusion"],
+  "hackernews": { "requete": "AI OR LLM OR GPT OR Claude OR Gemini OR OpenAI OR Anthropic OR Mistral OR agent", "points_min": 150 },
+  "motsCles": {
+    "bonus": ["launch", "release", "lance", "open source", "open-weight", "benchmark", "agent", "model", "modèle", "regulation", "AI Act", "lawsuit", "procès", "safety", "sécurité", "funding", "levée", "price", "prix"],
+    "malus": ["sponsored", "webinar", "giveaway", "deal", "promo", "podcast"]
+  }
+}

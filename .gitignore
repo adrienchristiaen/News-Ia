@@ -15,3 +15,5 @@ web/public/ep/
 video/public/ep/
 web/next-env.d.ts
 web/*.tsbuildinfo
+hebdo/_site/
+hebdo/veille/
