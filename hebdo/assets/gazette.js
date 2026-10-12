@@ -7,9 +7,15 @@
     return t ? t === "dark" : media.matches;
   }
   function maj() {
+    // Libellé fixe, état porté par aria-pressed : « Mode nuit (Nox), activé ».
     document.querySelectorAll("[data-theme-toggle]").forEach(function (b) {
+      b.hidden = false;
       b.setAttribute("aria-pressed", String(sombre()));
-      b.setAttribute("aria-label", sombre() ? "Passer en mode jour (Lumos)" : "Passer en mode nuit (Nox)");
+    });
+    // La barre du navigateur mobile suit le thème choisi.
+    var fond = getComputedStyle(root).getPropertyValue("--papier").trim();
+    document.querySelectorAll('meta[name="theme-color"]').forEach(function (m) {
+      if (fond) m.setAttribute("content", fond);
     });
   }
   document.addEventListener("click", function (ev) {

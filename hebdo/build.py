@@ -14,7 +14,7 @@ import json
 import re
 import shutil
 import sys
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -54,7 +54,7 @@ def fr(s):
     s = re.sub(r" ([;!?])", " \\1", s)
     s = re.sub(r" (:)(?!//)", " \\1", s)
     s = s.replace("« ", "« ").replace(" »", " »")
-    return s
+    return re.sub(r"(?<=\w)'(?=\w)", "’", s)
 
 
 class Ctx:
@@ -63,6 +63,13 @@ class Ctx:
     def __init__(self, sources):
         self.by_id = {s["id"]: s for s in sources}
         self.order = []
+        self.vues = {}
+
+    def appel(self, sid):
+        """Numéro de la source et identifiant unique de cet appel (pour le lien retour)."""
+        n = self.num(sid)
+        self.vues[sid] = self.vues.get(sid, 0) + 1
+        return n, f"cite-{n}-{self.vues[sid]}"
 
     def num(self, sid):
         if sid not in self.order:
@@ -85,10 +92,10 @@ def md(s, ctx):
     s = re.sub(r"\[([^\]]+)\]\((https?://[^)\s]+)\)", r'<a href="\2" rel="noopener">\1</a>', s)
 
     def cite(m):
-        n = ctx.num(m.group(1))
+        n, ident = ctx.appel(m.group(1))
         src = ctx.by_id[m.group(1)]
         t = html.escape(f"{src.get('editeur', '')} : {src['titre']}", quote=True)
-        return f'<sup class="ref"><a href="#source-{n}" title="{t}">{n}</a></sup>'
+        return f'<sup class="ref"><a id="{ident}" href="#source-{n}" title="{t}" aria-label="Source {n} : {t}">{n}</a></sup>'
 
     s = re.sub(r"\[\^([\w-]+)\]", cite, s)
     s = s.replace('</a></sup><sup class="ref"><a', '</a>,\u2009<a')
@@ -208,7 +215,7 @@ def article(a, ctx, forme):
 FORMES = ["large", "etroit", "etroit", "large", "plein"]
 
 
-def numero_html(n, base, est_une):
+def numero_html(n, base, est_une, prec=None, suiv=None):
     ctx = Ctx(n["sources"])
     u = n["une"]
     sommaire = [(u.get("id", "une"), u.get("titreCourt", u["titre"]))]
@@ -220,7 +227,7 @@ def numero_html(n, base, est_une):
     som = "".join(f'<li><a href="#{e(i)}">{md(t, Ctx([]))}</a></li>' for i, t in sommaire)
 
     une = f"""<section class="une" id="{e(u.get('id', 'une'))}" aria-labelledby="une-t">
-  <div class="filet-titre"><span>À la une</span></div>
+  <h2 class="filet-titre"><span>À la une</span></h2>
   <div class="une-grille">
     <div class="une-texte">
       <h2 class="une-titre" id="une-t">{md(u['titre'], ctx)}</h2>
@@ -236,9 +243,9 @@ def numero_html(n, base, est_une):
 
     breves = ""
     if n.get("breves"):
-        items = "".join(f"<li><h4>{md(b['titre'], ctx)}</h4><p>{md(b['texte'], ctx)}</p></li>" for b in n["breves"])
+        items = "".join(f"<li><h3>{md(b['titre'], ctx)}</h3><p>{md(b['texte'], ctx)}</p></li>" for b in n["breves"])
         breves = f"""<section class="hiboux" id="hiboux" aria-labelledby="hiboux-t">
-  <div class="filet-titre"><span id="hiboux-t">Hiboux express</span></div>
+  <h2 class="filet-titre" id="hiboux-t"><span>Hiboux express</span></h2>
   <ul class="hiboux-liste">{items}</ul>
 </section>"""
 
@@ -246,6 +253,8 @@ def numero_html(n, base, est_une):
     sc = n.get("salleCommune")
     if sc:
         rows = []
+        # Le lieu n'est imprimé que s'il varie d'un fil à l'autre.
+        un_lieu = len({it.get("lieu") for it in sc["items"]}) == 1
         for it in sc["items"]:
             chiffres = []
             if it.get("points") is not None:
@@ -254,13 +263,13 @@ def numero_html(n, base, est_une):
                 chiffres.append(f'<span><strong>{int(it["commentaires"]):,}</strong> commentaires</span>'.replace(",", " "))
             note = f'<p class="salle-note">{md(it["note"], ctx)}</p>' if it.get("note") else ""
             rows.append(f"""<li>
-  <p class="salle-lieu">{e(it['lieu'])}</p>
-  <p class="salle-titre"><a href="{e(it['url'])}" rel="noopener">{e(it['titre'])}</a></p>
+  {'' if un_lieu else f'<p class="salle-lieu">{e(it["lieu"])}</p>'}
+  <h3 class="salle-titre"><a href="{e(it['url'])}" rel="noopener">{e(it['titre'])}</a></h3>
   <p class="salle-chiffres">{''.join(chiffres)}</p>{note}
 </li>""")
         intro = f'<p class="salle-intro">{md(sc["intro"], ctx)}</p>' if sc.get("intro") else ""
         salle = f"""<section class="salle" id="salle-commune" aria-labelledby="salle-t">
-  <div class="filet-titre"><span id="salle-t">La salle commune</span></div>
+  <h2 class="filet-titre" id="salle-t"><span>La salle commune</span></h2>
   {intro}
   <ol class="salle-liste">{''.join(rows)}</ol>
 </section>"""
@@ -271,13 +280,24 @@ def numero_html(n, base, est_une):
         s = ctx.by_id[sid]
         meta = ", ".join(x for x in (s.get("editeur"), date_longue(s["date"], False) if s.get("date") else None) if x)
         src_items.append(f'<li id="source-{i}"><a href="{e(s["url"])}" rel="noopener">{e(s["titre"])}</a>'
-                         f'{f" <span>{e(meta)}</span>" if meta else ""}</li>')
+                         f'{f" <span>{e(meta)}</span>" if meta else ""}'
+                         f' <a class="retour" href="#cite-{i}-1" aria-label="Retour au texte, source {i}">retour au texte</a></li>')
     sources = f"""<section class="sources" aria-labelledby="sources-t">
-  <h2 id="sources-t">Sources</h2>
+  <h2 class="filet-titre" id="sources-t"><span>Sources</span></h2>
   <ol>{''.join(src_items)}</ol>
 </section>"""
 
     lien = "" if not est_une else f'<a href="{base}numero/{n["date"]}/">Lien permanent</a>'
+    nav = []
+    if prec:
+        nav.append(f'<a rel="prev" href="{base}numero/{prec["date"]}/">← N° {prec["numero"]}, {e(date_longue(prec["date"], False))}</a>')
+    if suiv:
+        nav.append(f'<a rel="next" href="{base}numero/{suiv["date"]}/">N° {suiv["numero"]}, {e(date_longue(suiv["date"], False))} →</a>')
+    elif n.get("statut", "publie") == "publie":
+        prochain = (d(n["date"]) + timedelta(days=7)).isoformat()
+        nav.append(f'<span>Prochain numéro {e(date_longue(prochain).lower())}. <a href="{base}feed.xml">Flux RSS</a></span>')
+    numeros_nav = f'<nav class="numeros-nav" aria-label="Autres numéros">{"".join(nav)}</nav>' if nav else ""
+    resume = f'<p class="numero-resume">{md(n["resume"], Ctx([]))}</p>' if n.get("resume") else ""
     relecture = ""
     if n.get("statut") == "brouillon":
         points = "".join(f"<li>{md(x, Ctx([]))}</li>" for x in n.get("relecture", [])) or "<li>Aucun point signalé par la rédaction.</li>"
@@ -289,6 +309,7 @@ def numero_html(n, base, est_une):
 </aside>"""
     return f"""<main id="contenu" class="journal">
 {relecture}
+{resume}
 <nav class="sommaire" aria-label="Dans ce numéro"><p>Dans ce numéro</p><ol>{som}</ol></nav>
 {une}
 <div class="papiers">{arts}</div>
@@ -296,6 +317,7 @@ def numero_html(n, base, est_une):
 {salle}
 {sources}
 <p class="numero-pied">N° {n['numero']}, {e(date_longue(n['date']).lower())}. {lien}</p>
+{numeros_nav}
 </main>"""
 
 
@@ -330,6 +352,7 @@ def page(titre, description, base, contenu, n=None, canon="", corps_cls=""):
 <link rel="alternate" type="application/rss+xml" title="{e(BRAND['name'])}" href="{base}feed.xml">
 <link rel="preload" href="{base}assets/fonts/unifrakturmaguntia-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{base}assets/fonts/playfair-display-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{base}assets/fonts/source-serif-4-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{base}assets/gazette.css">
 <script>try{{var t=localStorage.getItem("gazette-theme");if(t)document.documentElement.dataset.theme=t}}catch(_){{}}</script>
 </head>
@@ -337,16 +360,16 @@ def page(titre, description, base, contenu, n=None, canon="", corps_cls=""):
 <a class="evitement" href="#contenu">Aller au contenu</a>
 <header class="tete">
   <nav class="outils" aria-label="Navigation">
-    <a href="{base}">Dernier numéro</a>
-    <a href="{base}archives/">Archives</a>
+    <a href="{base}"{' aria-current="page"' if "page-une" in corps_cls else ''}>Dernier numéro</a>
+    <a href="{base}archives/"{' aria-current="page"' if "page-archives" in corps_cls else ''}>Archives</a>
     <a href="{base}feed.xml">RSS</a>
-    <button type="button" class="theme" data-theme-toggle aria-pressed="false">
+    <button type="button" class="theme" data-theme-toggle aria-pressed="false" aria-label="Mode nuit (Nox)" hidden>
       <span class="theme-nuit">Nox</span><span class="theme-jour">Lumos</span>
     </button>
   </nav>
-  <a class="titre-journal" href="{base}" aria-label="{e(BRAND['name'])}, accueil">
+  {'<h1 class="titre-h1">' if n else ''}<a class="titre-journal" href="{base}" aria-label="{e(BRAND['name'])}, accueil">
     <span class="titre-encre">{e(BRAND['name'])}</span>
-  </a>
+  </a>{'</h1>' if n else ''}
   {edition}
 </header>
 {contenu}
@@ -402,6 +425,11 @@ def rss(numeros):
 """
 
 
+def voisins(numeros, i):
+    """(numéro précédent, numéro suivant) ; la liste va du plus récent au plus ancien."""
+    return (numeros[i + 1] if i + 1 < len(numeros) else None, numeros[i - 1] if i > 0 else None)
+
+
 def cls(n):
     return "est-brouillon" if n.get("statut") == "brouillon" else ""
 
@@ -434,10 +462,10 @@ def main():
         titre_une = re.sub(r"\[\^[\w-]+\]|[*`]", "", n["une"]["titre"])
         t = f"{'[Brouillon] ' if n.get('statut') == 'brouillon' else ''}{titre_une} | {nom}, n° {n['numero']}"
         ecrire(OUT / "numero" / n["date"] / "index.html",
-               page(t, n["resume"], "../../", numero_html(n, "../../", False), n, f"numero/{n['date']}/", cls(n)).replace("{base}", "../../"))
+               page(t, n["resume"], "../../", numero_html(n, "../../", False, *voisins(numeros, i)), n, f"numero/{n['date']}/", cls(n)).replace("{base}", "../../"))
         if i == 0:
             ecrire(OUT / "index.html",
-                   page(f"{nom} : {titre_une}", n["resume"], "", numero_html(n, "", True), n, f"numero/{n['date']}/", cls(n)).replace("{base}", ""))
+                   page(f"{nom} : {titre_une}", n["resume"], "", numero_html(n, "", True, *voisins(numeros, i)), n, f"numero/{n['date']}/", (cls(n) + " page-une").strip()).replace("{base}", ""))
     if not numeros:
         ecrire(OUT / "index.html", page(nom, BRAND.get("tagline", ""), "", archives_html([], ""), None, ""))
     ecrire(OUT / "archives" / "index.html",

@@ -58,7 +58,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scrollbar-color: var(--filet) var(--papier); }
+html { scroll-padding-top: 1.5rem; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scrollbar-color: var(--filet) var(--papier); }
 body {
   margin: 0;
   background: var(--papier);
@@ -166,16 +166,42 @@ strong { font-weight: 650; }
   padding-inline: .1em;
 }
 
-/* L'animation d'auteur : l'encre se pose sur le titre, de gauche à droite, une fois. */
+.titre-h1 { margin: 0; font-weight: 400; font-size: clamp(2.15rem, 7.4vw, 5.6rem); line-height: 1.02; }
+.titre-h1 .titre-encre { font-size: 1em; }
+
+/* L'animation d'auteur : l'encre se pose sur le titre, de gauche à droite, sur la une seulement.
+   Le titre est lisible dès la première image ; le front d'encre est un dégradé, pas une coupe nette. */
 @media (prefers-reduced-motion: no-preference) {
-  .titre-encre { animation: encre 1100ms var(--ease-out) 80ms both; }
-  .titre-journal::after { animation: filet 900ms var(--ease-out) 260ms both; }
+  html { scroll-behavior: smooth; }
+  .page-une .titre-encre { animation: encre 750ms var(--ease-out) both; }
+  .page-une .titre-journal::after { animation: filet 600ms var(--ease-out) 200ms both; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-une .titre-encre { animation: encre-douce 200ms ease-out both; }
 }
 @keyframes encre {
-  from { clip-path: inset(-10% 100% -10% 0); filter: blur(5px); opacity: .5; }
-  60% { filter: blur(0); opacity: 1; }
-  to { clip-path: inset(-10% 0 -10% 0); filter: blur(0); opacity: 1; }
+  from {
+    opacity: .35;
+    filter: blur(2px);
+    -webkit-mask-image: linear-gradient(90deg, #000 45%, transparent 55%);
+    mask-image: linear-gradient(90deg, #000 45%, transparent 55%);
+    -webkit-mask-size: 260% 100%;
+    mask-size: 260% 100%;
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    -webkit-mask-image: linear-gradient(90deg, #000 45%, transparent 55%);
+    mask-image: linear-gradient(90deg, #000 45%, transparent 55%);
+    -webkit-mask-size: 260% 100%;
+    mask-size: 260% 100%;
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
 }
+@keyframes encre-douce { from { opacity: 0; } }
 .titre-journal::after {
   content: "";
   display: block;
@@ -230,6 +256,7 @@ strong { font-weight: 650; }
 /* ---------- Bandeaux de rubrique ---------- */
 
 .filet-titre {
+  font: inherit;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
@@ -275,7 +302,9 @@ strong { font-weight: 650; }
 .une-aside { border-left: 1px solid var(--filet); padding-left: clamp(1.2rem, 2.6vw, 2.2rem); }
 
 sup.ref { line-height: 0; font-size: .68em; font-variant-numeric: lining-nums tabular-nums; }
-sup.ref a { color: var(--accent); text-decoration: none; padding-inline: .08em; font-weight: 600; }
+sup.ref a { position: relative; color: var(--accent); text-decoration: none; padding-inline: .08em; font-weight: 600; }
+sup.ref a::after { content: ""; position: absolute; inset: -14px -8px; }
+sup.ref a:target { background: var(--surligne); }
 
 /* ---------- Plaque animée (la « photo vivante » du journal) ---------- */
 
@@ -309,8 +338,9 @@ sup.ref a { color: var(--accent); text-decoration: none; padding-inline: .08em; 
   opacity: .8;
 }
 @media (prefers-reduced-motion: no-preference) {
-  .plaque-gravure { animation: gravure 16s ease-in-out infinite alternate; }
-  .plaque-lueur { animation: lueur 11s ease-in-out infinite alternate; }
+  /* La photo vivante bouge, puis se pose : pas de mouvement perpétuel à côté du texte. */
+  .plaque-gravure { animation: gravure 16s ease-in-out 2 alternate; }
+  .plaque-lueur { animation: lueur 11s ease-in-out 2 alternate; }
 }
 @keyframes gravure {
   from { transform: translate3d(-3%, 1%, 0) rotate(-1deg) scale(1.02); }
@@ -361,18 +391,20 @@ sup.ref a { color: var(--accent); text-decoration: none; padding-inline: .08em; 
 /* ---------- Articles ---------- */
 
 .papiers {
+  --g: clamp(1.5rem, 3vw, 2.75rem);
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: clamp(1.5rem, 3vw, 2.75rem);
+  column-gap: 0;
 }
 .papier { padding-block: 2rem 2.2rem; border-bottom: 1px solid var(--filet); }
 .papier--large { grid-column: span 7; }
 .papier--etroit { grid-column: span 5; }
 .papier--plein { grid-column: 1 / -1; }
+/* Les filets horizontaux rejoignent le filet vertical, comme sur une vraie page montée. */
+.papiers > .papier:nth-child(odd):not(.papier--plein) { padding-right: var(--g); }
 .papiers > .papier:nth-child(even):not(.papier--plein) {
   border-left: 1px solid color-mix(in srgb, var(--filet) 45%, transparent);
-  padding-left: clamp(1.5rem, 3vw, 2.75rem);
-  margin-left: calc(-1 * clamp(1.5rem, 3vw, 2.75rem) / 2);
+  padding-left: var(--g);
 }
 .papier-titre {
   margin: 0;
@@ -385,15 +417,15 @@ sup.ref a { color: var(--accent); text-decoration: none; padding-inline: .08em; 
 }
 .papier--etroit .papier-titre { font-size: clamp(1.4rem, 2.1vw, 1.75rem); }
 .chapo { margin: .6rem 0 1.1rem; font-style: italic; color: var(--encre-2); line-height: 1.45; text-wrap: pretty; }
-.papier--large .papier-corps { columns: 2 16rem; column-gap: 2rem; }
-.papier--plein .papier-corps { columns: 3 16rem; column-gap: 2rem; column-rule: 1px solid color-mix(in srgb, var(--filet) 35%, transparent); }
+.papier--large .papier-corps { max-width: 68ch; }
+.papier--plein .papier-corps { columns: 2 22rem; column-gap: 2rem; column-rule: 1px solid color-mix(in srgb, var(--filet) 35%, transparent); }
 
 /* ---------- Hiboux express (brèves) ---------- */
 
 .hiboux { padding-bottom: 1.6rem; border-bottom: 1px solid var(--filet); }
-.hiboux-liste { list-style: none; margin: 0; padding: 0; columns: 3 17rem; column-gap: 2.2rem; column-rule: 1px solid color-mix(in srgb, var(--filet) 35%, transparent); }
-.hiboux-liste li { break-inside: avoid; margin-bottom: 1.35rem; }
-.hiboux-liste h4 { margin: 0 0 .25rem; font-family: var(--f-une); font-weight: 700; font-size: 1.12rem; line-height: 1.22; text-wrap: balance; }
+.hiboux-liste { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); gap: 1.35rem 2.2rem; }
+.hiboux-liste li { min-width: 0; }
+.hiboux-liste h3 { margin: 0 0 .25rem; font-family: var(--f-une); font-weight: 700; font-size: 1.12rem; line-height: 1.22; text-wrap: balance; }
 .hiboux-liste p { margin: 0; font-size: .98rem; line-height: 1.55; text-wrap: pretty; }
 
 /* ---------- La salle commune (ce dont parlent les communautés) ---------- */
@@ -404,16 +436,17 @@ sup.ref a { color: var(--accent); text-decoration: none; padding-inline: .08em; 
 .salle-liste li { padding-block: 1rem 1.1rem; border-top: 1px solid color-mix(in srgb, var(--filet) 45%, transparent); }
 .salle-liste p { margin: 0; }
 .salle-lieu { font-variant-caps: all-small-caps; letter-spacing: .08em; color: var(--encre-2); font-size: .95rem; }
-.salle-titre { font-family: var(--f-une); font-style: italic; font-weight: 600; font-size: 1.22rem; line-height: 1.25; margin-block: .15rem .35rem !important; text-wrap: balance; }
+.salle-titre { font-family: var(--f-une); font-style: italic; font-weight: 600; font-size: 1.22rem; line-height: 1.25; margin: .15rem 0 .35rem; text-wrap: balance; }
 .salle-titre a { text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent); }
 .salle-chiffres { display: flex; flex-wrap: wrap; gap: .3rem 1.1rem; font-size: .9rem; color: var(--encre-2); font-variant-numeric: lining-nums tabular-nums; }
 .salle-chiffres strong { color: var(--encre); font-family: var(--f-une); font-size: 1.05rem; font-weight: 700; }
-.salle-note { margin-top: .45rem !important; font-size: .96rem; line-height: 1.5; }
+.salle-liste .salle-note { margin-top: .45rem; font-size: .96rem; line-height: 1.5; }
 
 /* ---------- Sources ---------- */
 
 .sources { padding-block: 1.8rem 1rem; }
-.sources h2 { margin: 0 0 .8rem; font-weight: 600; font-size: 1.05rem; font-variant-caps: all-small-caps; letter-spacing: .12em; }
+.sources .filet-titre { margin-top: .6rem; }
+.sources .retour { font-size: .82rem; color: var(--encre-2); text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent); white-space: nowrap; }
 .sources ol { margin: 0; padding-left: 1.6rem; columns: 2 22rem; column-gap: 2.4rem; font-size: .86rem; line-height: 1.45; }
 .sources li { break-inside: avoid; margin-bottom: .45rem; padding-left: .2rem; }
 .sources li::marker { color: var(--accent); font-variant-numeric: tabular-nums; font-weight: 600; }
@@ -421,6 +454,11 @@ sup.ref a { color: var(--accent); text-decoration: none; padding-inline: .08em; 
 .sources li:target { background: var(--surligne); }
 .numero-pied { text-align: center; font-size: .9rem; color: var(--encre-2); margin: 1.4rem 0 0; }
 .numero-pied a { margin-left: .4rem; }
+.numero-resume { max-width: 62ch; margin: 1.4rem auto 0; text-align: center; font-style: italic; font-size: 1.12rem; line-height: 1.5; color: var(--encre); text-wrap: balance; }
+.numeros-nav { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .6rem 1.5rem; margin: 1.6rem 0 0; padding-top: 1rem; border-top: 1px solid color-mix(in srgb, var(--filet) 45%, transparent); font-size: .95rem; }
+.numeros-nav a[rel="next"] { margin-left: auto; }
+.numeros-nav span { color: var(--encre-2); font-style: italic; }
+.outils a[aria-current] { text-decoration-color: var(--accent); }
 
 /* ---------- Archives ---------- */
 
@@ -439,8 +477,7 @@ sup.ref a { color: var(--accent); text-decoration: none; padding-inline: .08em; 
   grid-template-columns: 5.5rem minmax(0, 1fr) auto;
   grid-template-areas: "num titre date" "num resume date";
   gap: .2rem 1.4rem;
-  padding: 1.1rem .6rem;
-  margin-inline: -.6rem;
+  padding: 1.1rem 0;
   text-decoration: none;
   border-bottom: 1px solid color-mix(in srgb, var(--filet) 40%, transparent);
   transition: background-color 160ms ease;
@@ -519,7 +556,8 @@ sup.ref a { color: var(--accent); text-decoration: none; padding-inline: .08em; 
   .plaque { max-width: 26rem; margin-inline: auto; }
   .plaque-cadre { aspect-ratio: 5 / 4; }
   .papier--large, .papier--etroit { grid-column: 1 / -1; }
-  .papiers > .papier:nth-child(even):not(.papier--plein) { border-left: 0; padding-left: 0; margin-left: 0; }
+  .papiers > .papier:nth-child(even):not(.papier--plein) { border-left: 0; padding-left: 0; }
+  .papiers > .papier:nth-child(odd):not(.papier--plein) { padding-right: 0; }
 }
 @media (max-width: 640px) {
   body { font-size: 1.03rem; }
@@ -544,3 +582,4 @@ sup.ref a { color: var(--accent); text-decoration: none; padding-inline: .08em; 
   body { background: #fff; color: #000; }
   .titre-encre, .titre-journal::after { animation: none; }
 }
+.theme[hidden] { display: none; }
